@@ -62,7 +62,7 @@ export class CastManager {
       window.__onGCastApiAvailable = (isAvailable: boolean) => {
         console.log(`🔄 Google Cast SDK disponible: ${isAvailable}`);
         
-        if (isAvailable && this.isCastSDKReady()) {
+        if (isAvailable) {
           try {
             this.setupCastContext();
             this.isInitialized = true;
@@ -117,7 +117,9 @@ export class CastManager {
       window.cast.framework.CastContextEventType.CAST_STATE_CHANGED,
       (event: any) => {
         const castState = event.castState;
-        console.log('🔄 Estado Cast cambiado:', castState);
+        console.log('🔄 Estado Cast cambiado:', this.getCastStateDescription(castState), `(${castState})`);
+        console.log('🔎 ¿Hay dispositivos disponibles en este momento?:', this.areDevicesAvailable());
+        console.log('📄 Detalles completos del evento de estado:', event);
         
         // Log detallado de estados
         const CastState = window.cast?.framework?.CastState;
