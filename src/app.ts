@@ -1,6 +1,5 @@
 import './styles.scss';
 import { CastManager } from './cast-manager';
-import { CastState } from './cast-types';
 
 // Interfaces y tipos
 interface SoundFile {
@@ -36,6 +35,11 @@ class VoiceCommunicatorApp {
     
     constructor() {
         this.castManager = new CastManager();
+        // Configurar callback para actualizar estado del botón cuando cambie Cast
+        this.castManager.onStateChange(() => {
+            // Dar tiempo para que el estado se actualice completamente
+            setTimeout(() => this.updateCastButtonState(), 500);
+        });
         this.init();
     }
 
@@ -50,6 +54,31 @@ class VoiceCommunicatorApp {
     private initializeApp(): void {
         this.preloadAudio();
         this.createSoundButtons();
+        this.updateCastButtonState();
+    }
+
+    private updateCastButtonState(): void {
+        const button = document.getElementById('googleBtn') as HTMLButtonElement;
+        if (!button) return;
+
+        // Verificar si hay dispositivos disponibles
+        const devicesAvailable = this.castManager.areDevicesAvailable();
+        
+        if (devicesAvailable) {
+            button.classList.remove('no-devices');
+            button.disabled = false;
+            button.title = 'Conectar a Google Cast';
+        } else {
+            button.classList.add('no-devices');
+            button.disabled = true; // Deshabilitar completamente el botón
+            button.title = 'No hay dispositivos Google Cast disponibles';
+        }
+        
+        console.log('🔍 Estado botón Cast actualizado:', {
+            devicesAvailable,
+            disabled: button.disabled,
+            classes: button.className
+        });
     }
 
     private preloadAudio(): void {
@@ -245,6 +274,12 @@ class VoiceCommunicatorApp {
         
         const button = document.getElementById('googleBtn') as HTMLButtonElement;
         
+        // Si el botón está deshabilitado, no hacer nada
+        if (button && button.disabled) {
+            console.log('🚫 Botón Google Cast deshabilitado - no hay dispositivos disponibles');
+            return;
+        }
+        
         // Si ya está conectado, desconectar
         if (this.castManager.isConnected()) {
             this.castManager.stopCasting();
@@ -259,6 +294,19 @@ class VoiceCommunicatorApp {
         button.textContent = '🔄';
         
         try {
+            // Verificar si hay dispositivos disponibles antes de intentar conectar
+            const devicesAvailable = this.castManager.areDevicesAvailable();
+            console.log('🔍 Dispositivos Cast disponibles:', devicesAvailable);
+            
+            if (!devicesAvailable) {
+                button.textContent = '📡';
+                this.showNotification('⚠️ No se encontraron dispositivos Google Cast en la red');
+                this.showNotification('📶 Verifica que tu Google Mini/Hub esté encendido y en la misma WiFi');
+                // Actualizar estado visual del botón
+                this.updateCastButtonState();
+                return;
+            }
+            
             const connected = await this.castManager.startCasting();
             
             if (connected) {

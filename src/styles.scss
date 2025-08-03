@@ -271,6 +271,30 @@ body {
     }
   }
 
+  &.google-btn.no-devices,
+  &.google-btn:disabled {
+    background: linear-gradient(45deg, #9E9E9E, #757575) !important;
+    color: #BDBDBD !important;
+    cursor: not-allowed !important;
+    opacity: 0.4 !important;
+    pointer-events: none; // Bloquear completamente la interacción
+    
+    &:hover {
+      transform: none !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+      background: linear-gradient(45deg, #9E9E9E, #757575) !important;
+    }
+    
+    &:active {
+      transform: none !important;
+    }
+    
+    &:focus {
+      outline: none !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+
   &.playing {
     animation: pulse 0.6s ease;
   }
