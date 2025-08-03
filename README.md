@@ -141,44 +141,6 @@ La aplicación mostrará automáticamente un prompt de instalación cuando:
 - ✅ **Acceso a hardware** (micrófono, altavoces)
 - ✅ **Rendimiento nativo**
 
-## 🌐 Despliegue en producción
-
-### Opción 1: Netlify (Recomendado)
-
-```bash
-# 1. Generar build
-npm run build
-
-# 2. Ir a netlify.com
-# 3. Arrastra la carpeta dist/ completa
-# 4. Obtén URL como: https://amazing-app-123.netlify.app
-```
-
-### Opción 2: Vercel
-
-```bash
-# 1. Subir proyecto a GitHub
-# 2. Conectar repositorio en vercel.com
-# 3. Deploy automático
-```
-
-### Opción 3: GitHub Pages
-
-```bash
-# 1. Generar build
-npm run build
-
-# 2. Subir contenido de dist/ a rama gh-pages
-# 3. Activar GitHub Pages en configuración del repo
-```
-
-### Opción 4: Servidor propio
-
-```bash
-# Copiar contenido de dist/ al servidor web
-scp -r dist/* usuario@servidor:/var/www/html/
-```
-
 ## 🔧 Tecnologías utilizadas
 
 ### Frontend
@@ -328,15 +290,3 @@ Si tienes problemas o preguntas:
 ---
 
 **¡Disfruta usando Voice Communicator!** 🎵📱✨
-
-# Instalar dependencias
-npm install
-
-# Ejecutar en modo desarrollo (con hot reload)
-npm run dev
-
-# O simplemente
-npm start
-
-# Para compilar para producción
-npm run build
