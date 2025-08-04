@@ -43,6 +43,10 @@ export class AudioManager {
         return this.audioObjects[soundName];
     }
 
+        public getAudioObjects(): AudioObjects {
+        return this.audioObjects;
+    }
+
     public playSound(soundName: string): void {
         const audio = this.getAudioElement(soundName);
         if (audio) {

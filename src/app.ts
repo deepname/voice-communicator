@@ -4,7 +4,7 @@ import { AudioManager } from './audio-manager';
 import { UIManager } from './ui-manager';
 import { PWAManager } from './pwa-manager';
 
-class VoiceCommunicatorApp {
+export class VoiceCommunicatorApp {
     private castManager: CastManager;
     private audioManager: AudioManager;
     private uiManager: UIManager;

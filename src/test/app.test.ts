@@ -1,69 +1,54 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { VoiceCommunicatorApp } from '../app';
+import { CastManager } from '../cast-manager';
+import { AudioManager } from '../audio-manager';
+import { UIManager } from '../ui-manager';
+import { PWAManager } from '../pwa-manager';
 
-// Mock del DOM
-const mockElement = {
-  addEventListener: vi.fn(),
-  appendChild: vi.fn(),
-  classList: {
-    add: vi.fn(),
-    remove: vi.fn(),
-    contains: vi.fn()
-  },
-  style: {},
-  textContent: '',
-  disabled: false,
-  title: ''
-};
+// Mock de los módulos gestores
+vi.mock('../cast-manager');
+vi.mock('../audio-manager');
+vi.mock('../ui-manager');
+vi.mock('../pwa-manager');
 
-const mockDocument = {
-  createElement: vi.fn(() => mockElement),
-  getElementById: vi.fn(() => mockElement),
-  addEventListener: vi.fn(),
-  readyState: 'complete',
-  body: mockElement
-};
+describe('VoiceCommunicatorApp', () => {
+  let domContentLoadedCallback: EventListener = () => {};
 
-// Mock global del document
-Object.defineProperty(global, 'document', {
-  value: mockDocument,
-  writable: true
-});
-
-describe('App Configuration', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('should have correct sound configuration structure', () => {
-    // Test de configuración básica
-    const soundConfig = {
-      name: 'Test',
-      filename: 'test.mp3',
-      color: '#FF0000'
-    };
-    
-    expect(soundConfig).toHaveProperty('name');
-    expect(soundConfig).toHaveProperty('filename');
-    expect(soundConfig).toHaveProperty('color');
-    expect(soundConfig.filename).toMatch(/\.mp3$/);
-    expect(soundConfig.color).toMatch(/^#[0-9A-F]{6}$/i);
-  });
-
-  it('should validate sound names format', () => {
-    const expectedNames = ['Cris', 'Ivan', 'Josefina', 'Mimi', 'Rita', 'Valentina'];
-    
-    expectedNames.forEach(name => {
-      expect(typeof name).toBe('string');
-      expect(name.length).toBeGreaterThan(0);
+    // Capturamos el callback de DOMContentLoaded en lugar de dispararlo inmediatamente
+    vi.spyOn(document, 'addEventListener').mockImplementation((event, callback) => {
+      if (event === 'DOMContentLoaded') {
+        domContentLoadedCallback = callback as EventListener;
+      }
     });
+    
+    // Limpiamos los mocks antes de cada test para evitar contadores acumulados
+    vi.clearAllMocks();
+    
+    new VoiceCommunicatorApp();
   });
 
-  it('should create Audio objects correctly', () => {
-    const audio = new Audio('test.mp3');
-    
-    expect(audio).toBeDefined();
-    expect(audio.src).toBe('test.mp3');
-    expect(typeof audio.play).toBe('function');
-    expect(typeof audio.pause).toBe('function');
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('debería instanciar todos los gestores en el constructor', () => {
+    expect(CastManager).toHaveBeenCalledTimes(1);
+    expect(AudioManager).toHaveBeenCalledTimes(1);
+    expect(UIManager).toHaveBeenCalledTimes(1);
+    expect(PWAManager).toHaveBeenCalledTimes(1);
+  });
+
+  it('debería inicializar todos los gestores cuando el DOM esté cargado', () => {
+    // Disparamos manualmente el evento para este test
+    domContentLoadedCallback(new Event('DOMContentLoaded'));
+
+    const audioManagerInstance = (AudioManager as any).mock.instances[0];
+    const uiManagerInstance = (UIManager as any).mock.instances[0];
+    const pwaManagerInstance = (PWAManager as any).mock.instances[0];
+
+    expect(audioManagerInstance.preloadAudio).toHaveBeenCalledTimes(1);
+    expect(uiManagerInstance.initializeUI).toHaveBeenCalledTimes(1);
+    expect(pwaManagerInstance.setupPWA).toHaveBeenCalledTimes(1);
   });
 });
