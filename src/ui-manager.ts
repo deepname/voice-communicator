@@ -26,7 +26,7 @@ export class UIManager {
     }
 
     private createSoundButtons(): void {
-        const container = document.getElementById('sound-buttons');
+                const container = document.getElementById('soundGrid');
         if (!container) return;
 
         soundFiles.forEach((sound: SoundFile) => {
