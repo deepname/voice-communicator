@@ -1,4 +1,4 @@
-import './styles.scss';
+import './styles/main.scss';
 import { CastManager } from './cast-manager';
 import { AudioManager } from './audio-manager';
 import { UIManager } from './ui-manager';

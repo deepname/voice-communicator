@@ -1,0 +1,48 @@
+// =============================================================================
+// FUNCIÓN UTILITARIA PX TO REM
+// =============================================================================
+
+// Función para convertir píxeles a rem
+// Asume que el font-size base es 16px (estándar del navegador)
+@function rem($pixels) {
+  @if type-of($pixels) == 'number' {
+    @if unit($pixels) == 'px' {
+      @return $pixels / 16px * 1rem;
+    } @else if unitless($pixels) {
+      @return $pixels / 16 * 1rem;
+    } @else {
+      @error 'La función rem() espera un valor en píxeles o un número sin unidad, recibió: #{$pixels}';
+    }
+  } @else {
+    @error 'La función rem() espera un número, recibió: #{type-of($pixels)}';
+  }
+}
+
+// Función alternativa para múltiples valores (ej: padding, margin)
+@function rem-multiple($values...) {
+  $result: ();
+  @each $value in $values {
+    @if $value == 0 {
+      $result: append($result, 0);
+    } @else {
+      $result: append($result, rem($value));
+    }
+  }
+  @return $result;
+}
+
+// =============================================================================
+// SCSS VARIABLES
+// =============================================================================
+
+// SCSS Variables (los colores están definidos en _colors.scss)
+$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+// Breakpoints (convertidos a rem para mejor escalabilidad)
+$mobile: rem(640);
+$tablet: rem(768);
+$desktop: rem(1024);
+
+// Timing functions
+$ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);

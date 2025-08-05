@@ -1,0 +1,40 @@
+// Mejoras para dispositivos móviles
+@media (max-width: $mobile) {
+  .sound-button {
+    min-height: rem(100);
+    font-size: rem(16);
+  }
+  
+  header {
+    padding: rem(16);
+    
+    h1 {
+      font-size: rem(20);
+    }
+    
+    button {
+      width: rem(40);
+      height: rem(40);
+      font-size: rem(16);
+    }
+  }
+}
+
+// Scrollbar personalizado
+::-webkit-scrollbar {
+  width: rem(8);
+}
+
+::-webkit-scrollbar-track {
+  background: $scrollbar-track;
+  border-radius: rem(4);
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbar-thumb;
+  border-radius: rem(4);
+  
+  &:hover {
+    background: $scrollbar-thumb-hover;
+  }
+}

@@ -1,0 +1,101 @@
+// Botones de sonido modernos
+.sound-button {
+  position: relative;
+  min-height: rem(120);
+  border-radius: rem(20);
+  background: $glass-bg;
+  border: 1px solid $glass-border;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: $text-primary;
+  font-weight: 600;
+  font-size: rem(17.6);
+  letter-spacing: 0.025em;
+  transition: all 0.4s $ease-smooth;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  
+  // Efecto de brillo animado
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, $glass-bg-strong, transparent);
+    transition: left 0.6s;
+  }
+  
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-strong);
+    background: $glass-bg-hover;
+    border-color: $glass-border-strong;
+    
+    &::before {
+      left: 100%;
+    }
+  }
+  
+  &:active {
+    transform: translateY(-4px) scale(0.98);
+  }
+  
+  &.playing {
+    background: $success-gradient;
+    border-color: $cast-border-color;
+    box-shadow: var(--shadow-cast);
+    animation: pulse-playing 2s infinite;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    
+    &:hover {
+      transform: none;
+      box-shadow: var(--shadow-soft);
+    }
+  }
+  
+  // Diferentes colores para cada botón
+  &:nth-child(1) { background: $sound-button-1-gradient; }
+  &:nth-child(2) { background: $sound-button-2-gradient; }
+  &:nth-child(3) { background: $sound-button-3-gradient; }
+  &:nth-child(4) { background: $sound-button-4-gradient; }
+  &:nth-child(5) { background: $sound-button-5-gradient; }
+  &:nth-child(6) { background: $sound-button-6-gradient; }
+}
+
+// Aplicar animaciones de entrada
+.sound-button {
+  animation: slideInUp 0.6s $ease-smooth forwards;
+  
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+}
+
+// Efectos de carga
+.loading {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: rem(20);
+    height: rem(20);
+    margin: rem(-10) 0 0 rem(-10);
+    border: 2px solid $loading-border;
+    border-top: 2px solid $loading-border-active;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}

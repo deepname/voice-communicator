@@ -1,0 +1,164 @@
+// =============================================================================
+// SISTEMA DE COLORES DE LA APLICACIÓN
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// COLORES BASE
+// -----------------------------------------------------------------------------
+$white: #ffffff;
+$black: #000000;
+$transparent: transparent;
+
+// -----------------------------------------------------------------------------
+// COLORES PRIMARIOS
+// -----------------------------------------------------------------------------
+$primary-blue-light: #667eea;
+$primary-blue-dark: #764ba2;
+$primary-gradient: linear-gradient(135deg, #{$primary-blue-light} 0%, #{$primary-blue-dark} 100%);
+
+// -----------------------------------------------------------------------------
+// COLORES SECUNDARIOS
+// -----------------------------------------------------------------------------
+$secondary-pink: #f093fb;
+$secondary-red: #f5576c;
+$secondary-gradient: linear-gradient(135deg, #{$secondary-pink} 0%, #{$secondary-red} 100%);
+
+// -----------------------------------------------------------------------------
+// COLORES DE ÉXITO/ACTIVO
+// -----------------------------------------------------------------------------
+$success-blue-light: #4facfe;
+$success-blue-dark: #00f2fe;
+$success-gradient: linear-gradient(135deg, #{$success-blue-light} 0%, #{$success-blue-dark} 100%);
+
+// -----------------------------------------------------------------------------
+// FONDO DE LA APLICACIÓN
+// -----------------------------------------------------------------------------
+$background-blue-dark: #1e3c72;
+$background-blue-light: #2a5298;
+$background-gradient: linear-gradient(135deg, #{$background-blue-dark} 0%, #{$background-blue-light} 100%);
+
+// -----------------------------------------------------------------------------
+// COLORES DE BOTONES DE SONIDO (6 botones únicos)
+// -----------------------------------------------------------------------------
+// Botón 1 - Rojo/Naranja
+$sound-button-1-light: rgba(255, 107, 107, 0.2);
+$sound-button-1-dark: rgba(255, 142, 83, 0.2);
+$sound-button-1-gradient: linear-gradient(135deg, #{$sound-button-1-light} 0%, #{$sound-button-1-dark} 100%);
+
+// Botón 2 - Verde
+$sound-button-2-light: rgba(126, 213, 111, 0.2);
+$sound-button-2-dark: rgba(40, 180, 133, 0.2);
+$sound-button-2-gradient: linear-gradient(135deg, #{$sound-button-2-light} 0%, #{$sound-button-2-dark} 100%);
+
+// Botón 3 - Azul
+$sound-button-3-light: rgba(116, 185, 255, 0.2);
+$sound-button-3-dark: rgba(81, 146, 250, 0.2);
+$sound-button-3-gradient: linear-gradient(135deg, #{$sound-button-3-light} 0%, #{$sound-button-3-dark} 100%);
+
+// Botón 4 - Púrpura
+$sound-button-4-light: rgba(162, 155, 254, 0.2);
+$sound-button-4-dark: rgba(116, 97, 195, 0.2);
+$sound-button-4-gradient: linear-gradient(135deg, #{$sound-button-4-light} 0%, #{$sound-button-4-dark} 100%);
+
+// Botón 5 - Rosa
+$sound-button-5-light: rgba(255, 154, 158, 0.2);
+$sound-button-5-dark: rgba(250, 208, 196, 0.2);
+$sound-button-5-gradient: linear-gradient(135deg, #{$sound-button-5-light} 0%, #{$sound-button-5-dark} 100%);
+
+// Botón 6 - Amarillo/Naranja
+$sound-button-6-light: rgba(255, 206, 84, 0.2);
+$sound-button-6-dark: rgba(255, 180, 128, 0.2);
+$sound-button-6-gradient: linear-gradient(135deg, #{$sound-button-6-light} 0%, #{$sound-button-6-dark} 100%);
+
+// -----------------------------------------------------------------------------
+// COLORES DE NOTIFICACIONES
+// -----------------------------------------------------------------------------
+$notification-success: rgba(34, 197, 94, 0.9);
+$notification-error: rgba(239, 68, 68, 0.9);
+$notification-info: rgba(59, 130, 246, 0.9);
+
+// -----------------------------------------------------------------------------
+// COLORES DE INSTALACIÓN PWA
+// -----------------------------------------------------------------------------
+$install-bg-light: rgba(59, 130, 246, 0.95);
+$install-bg-dark: rgba(37, 99, 235, 0.95);
+$install-gradient: linear-gradient(135deg, #{$install-bg-light} 0%, #{$install-bg-dark} 100%);
+$install-button-bg: rgba(255, 255, 255, 0.9);
+$install-button-text: #1e40af;
+
+// -----------------------------------------------------------------------------
+// EFECTOS GLASSMORPHISM
+// -----------------------------------------------------------------------------
+$glass-bg: rgba(255, 255, 255, 0.1);
+$glass-bg-hover: rgba(255, 255, 255, 0.15);
+$glass-bg-strong: rgba(255, 255, 255, 0.2);
+$glass-border: rgba(255, 255, 255, 0.2);
+$glass-border-strong: rgba(255, 255, 255, 0.3);
+$glass-bg-very-light: rgba(255, 255, 255, 0.05);
+
+// -----------------------------------------------------------------------------
+// COLORES DE TEXTO
+// -----------------------------------------------------------------------------
+$text-primary: #ffffff;
+$text-gradient-start: #ffffff;
+$text-gradient-end: #e0e7ff;
+$text-gradient: linear-gradient(135deg, #{$text-gradient-start} 0%, #{$text-gradient-end} 100%);
+
+// -----------------------------------------------------------------------------
+// COLORES DE SOMBRAS
+// -----------------------------------------------------------------------------
+$shadow-color-soft: rgba(0, 0, 0, 0.1);
+$shadow-color-strong: rgba(0, 0, 0, 0.3);
+$shadow-color-button: rgba(0, 0, 0, 0.2);
+$shadow-color-cast: rgba(79, 172, 254, 0.3);
+$shadow-color-cast-strong: rgba(79, 172, 254, 0.6);
+
+// -----------------------------------------------------------------------------
+// COLORES DE SCROLLBAR
+// -----------------------------------------------------------------------------
+$scrollbar-track: rgba(255, 255, 255, 0.1);
+$scrollbar-thumb: rgba(255, 255, 255, 0.3);
+$scrollbar-thumb-hover: rgba(255, 255, 255, 0.5);
+
+// -----------------------------------------------------------------------------
+// COLORES DE LOADING/SPINNER
+// -----------------------------------------------------------------------------
+$loading-border: rgba(255, 255, 255, 0.3);
+$loading-border-active: #ffffff;
+
+// Colores adicionales para casos específicos
+$cast-border-color: rgba(79, 172, 254, 0.5);
+$shadow-install: rgba(0, 0, 0, 0.15);
+
+// =============================================================================
+// VARIABLES CSS PARA USO EN HTML/JS
+// =============================================================================
+:root {
+  // Gradientes principales
+  --primary-gradient: #{$primary-gradient};
+  --secondary-gradient: #{$secondary-gradient};
+  --success-gradient: #{$success-gradient};
+  --background-gradient: #{$background-gradient};
+  
+  // Efectos glassmorphism
+  --glass-bg: #{$glass-bg};
+  --glass-bg-hover: #{$glass-bg-hover};
+  --glass-bg-strong: #{$glass-bg-strong};
+  --glass-border: #{$glass-border};
+  --glass-border-strong: #{$glass-border-strong};
+  
+  // Sombras
+  --shadow-soft: 0 8px 32px #{$shadow-color-soft};
+  --shadow-strong: 0 20px 60px #{$shadow-color-strong};
+  --shadow-button: 0 10px 25px #{$shadow-color-button};
+  --shadow-cast: 0 0 30px #{$shadow-color-cast};
+  --shadow-cast-strong: 0 0 50px #{$shadow-color-cast-strong};
+  
+  // Colores de notificaciones
+  --notification-success: #{$notification-success};
+  --notification-error: #{$notification-error};
+  --notification-info: #{$notification-info};
+  
+  // Colores de texto
+  --text-gradient: #{$text-gradient};
+}
