@@ -4,17 +4,20 @@
 
 // Función para convertir píxeles a rem
 // Asume que el font-size base es 16px (estándar del navegador)
+@use 'sass:math';
+@use 'sass:meta';
+
 @function rem($pixels) {
-  @if type-of($pixels) == 'number' {
-    @if unit($pixels) == 'px' {
-      @return $pixels / 16px * 1rem;
-    } @else if unitless($pixels) {
-      @return $pixels / 16 * 1rem;
+  @if meta.type-of($pixels) == 'number' {
+    @if math.unit($pixels) == 'px' {
+      @return math.div($pixels, 16px) * 1rem;
+    } @else if math.is-unitless($pixels) {
+      @return math.div($pixels, 16) * 1rem;
     } @else {
       @error 'La función rem() espera un valor en píxeles o un número sin unidad, recibió: #{$pixels}';
     }
   } @else {
-    @error 'La función rem() espera un número, recibió: #{type-of($pixels)}';
+    @error 'La función rem() espera un número, recibió: #{meta.type-of($pixels)}';
   }
 }
 
@@ -36,13 +39,13 @@
 // =============================================================================
 
 // SCSS Variables (los colores están definidos en _colors.scss)
-$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !default;
 
 // Breakpoints (convertidos a rem para mejor escalabilidad)
-$mobile: rem(640);
-$tablet: rem(768);
-$desktop: rem(1024);
+$mobile: rem(640) !default;
+$tablet: rem(768) !default;
+$desktop: rem(1024) !default;
 
 // Timing functions
-$ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-$ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+$ease-smooth: cubic-bezier(0.4, 0, 0.2, 1) !default;
+$ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;

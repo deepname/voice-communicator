@@ -1,15 +1,18 @@
+@use 'variables' as variables;
+@use 'colors' as colors;
+
 // Header moderno
 header {
-  background: linear-gradient(135deg, $glass-bg 0%, $glass-bg-very-light 100%);
+  background: linear-gradient(135deg, colors.$glass-bg 0%, colors.$glass-bg-very-light 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid $glass-border;
-  padding: rem(24);
+  border-bottom: 1px solid colors.$glass-border;
+  padding: variables.rem(24);
   
   h1 {
     font-weight: 700;
-    font-size: rem(24);
-    background: $text-gradient;
+    font-size: variables.rem(24);
+    background: colors.$text-gradient;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -18,21 +21,21 @@ header {
   }
   
   button {
-    width: rem(48);
-    height: rem(48);
-    border-radius: rem(12);
-    background: $glass-bg;
-    border: 1px solid $glass-border;
+    width: variables.rem(48);
+    height: variables.rem(48);
+    border-radius: variables.rem(12);
+    background: colors.$glass-bg;
+    border: 1px solid colors.$glass-border;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    transition: all 0.3s $ease-smooth;
+    transition: all 0.3s variables.$ease-smooth;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: rem(20);
+    font-size: variables.rem(20);
     
     &:hover {
-      background: $glass-bg-strong;
+      background: colors.$glass-bg-strong;
       transform: translateY(-2px);
       box-shadow: var(--shadow-button);
     }
@@ -45,12 +48,12 @@ header {
 
 // Grid de sonidos mejorado
 #soundGrid {
-  padding: rem(32);
-  gap: rem(24);
+  padding: variables.rem(32);
+  gap: variables.rem(24);
   
-  @media (max-width: $mobile) {
-    padding: rem(16);
-    gap: rem(16);
+  @media (max-width: variables.$mobile) {
+    padding: variables.rem(16);
+    gap: variables.rem(16);
   }
 }
 
@@ -58,43 +61,43 @@ header {
 #notification {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  background: $notification-success;
-  border: 1px solid $glass-border;
-  border-radius: rem(12);
+  background: colors.$notification-success;
+  border: 1px solid colors.$glass-border;
+  border-radius: variables.rem(12);
   box-shadow: var(--shadow-strong);
-  animation: slideInRight 0.4s $ease-smooth;
+  animation: slideInRight 0.4s variables.$ease-smooth;
   font-weight: 500;
   
   &.error {
-    background: $notification-error;
+    background: colors.$notification-error;
   }
   
   &.info {
-    background: $notification-info;
+    background: colors.$notification-info;
   }
 }
 
 // Prompt de instalación mejorado
 #install-prompt {
-  background: $install-gradient;
+  background:   colors.$install-gradient;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  border-top: 1px solid $glass-border;
-  animation: slideInUp 0.5s $ease-smooth;
+  border-top: 1px solid colors.$glass-border;
+  animation: slideInUp 0.5s variables.$ease-smooth;
   
   button {
-    background: $install-button-bg;
-    color: $install-button-text;
-    border-radius: rem(8);
-    padding: rem(8) rem(16);
+    background: colors.$install-button-bg;
+    color: colors.$install-button-text;
+    border-radius: variables.rem(8);
+    padding: variables.rem(8) variables.rem(16);
     font-weight: 600;
     transition: all 0.3s ease;
     border: none;
     
     &:hover {
-      background: white;
+      background: colors.$white;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px $shadow-install;
+      box-shadow: 0 4px 12px colors.$shadow-install;
     }
   }
 }

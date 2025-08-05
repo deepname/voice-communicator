@@ -1,12 +1,5 @@
+@use 'index' as *;
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-// Importar parciales en orden correcto
-@import 'colors';      // Colores primero para que estén disponibles en todos los archivos
-@import 'variables';
-@import 'base';
-@import 'layout';
-@import 'components';
-@import 'animations';
-@import 'utilities';

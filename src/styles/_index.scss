@@ -1,0 +1,8 @@
+// Centraliza y reexporta todos los módulos SCSS para uso moderno
+@forward 'colors';
+@forward 'variables';
+@forward 'base';
+@forward 'layout';
+@forward 'components';
+@forward 'animations';
+@forward 'utilities';

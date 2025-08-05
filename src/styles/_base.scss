@@ -1,11 +1,14 @@
+@use 'variables' as variables;
+@use 'colors' as colors;
+
 // Reset y base
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: $font-family;
-  background: $background-gradient;
+  font-family: variables.$font-family;
+  background: colors.$background-gradient;
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
@@ -15,15 +18,15 @@ body {
 #app-container {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  background: $glass-bg;
-  border: 1px solid $glass-border;
+  background: colors.$glass-bg;
+  border: 1px solid colors.$glass-border;
   box-shadow: var(--shadow-soft);
-  border-radius: rem(20);
-  margin: rem(10);
-  min-height: calc(100vh - #{rem(20)});
+  border-radius: variables.rem(20);
+  margin: variables.rem(10);
+  min-height: calc(100vh - #{variables.rem(20)});
   overflow: hidden;
   
-  @media (max-width: $mobile) {
+  @media (max-width: variables.$mobile) {
     margin: 0;
     border-radius: 0;
     min-height: 100vh;
