@@ -1,67 +1,141 @@
 # 🎵 Voice Communicator
 
-> **Soundboard PWA moderno con Google Cast** - Reproduce sonidos de voz en dispositivos locales o Google Mini/Hub
+> **Soundboard PWA moderno con Google Cast y diseño glassmorphism** - Reproduce sonidos de voz en dispositivos locales o Google Cast con interfaz moderna y optimizada
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![SCSS](https://img.shields.io/badge/SCSS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)](https://sass-lang.com/)
 [![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://web.dev/progressive-web-apps/)
 [![Google Cast](https://img.shields.io/badge/Google%20Cast-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://developers.google.com/cast)
+[![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 
 ## 📖 Descripción
 
-**Voice Communicator** es una aplicación web progresiva (PWA) moderna que funciona como un soundboard interactivo. Permite reproducir archivos de audio de voz tanto en el dispositivo local como en dispositivos Google Cast (Google Mini, Google Hub, etc.). La aplicación está construida con TypeScript, SCSS y Webpack, ofreciendo una experiencia nativa en dispositivos móviles.
+**Voice Communicator** es una aplicación web progresiva (PWA) de última generación que funciona como un soundboard interactivo profesional. Diseñada con arquitectura modular en TypeScript, ofrece reproducción de audio tanto local como remota a través de Google Cast, con una interfaz moderna que implementa efectos glassmorphism y animaciones fluidas.
 
-### ✨ Características principales
+## ✨ Características Principales
 
-- 🎵 **6 botones de sonido** personalizados con colores únicos
-- 📡 **Google Cast integrado** - Reproduce en Google Mini/Hub
-- 📱 **PWA completa** - Instalable como app nativa en Android
-- 🔒 **Bloqueo inteligente** - Evita superposición de audios
-- 🎨 **Diseño responsivo** - Se adapta a todas las pantallas
-- ⚡ **Animaciones fluidas** - Efectos visuales modernos
-- 🌐 **Funciona offline** - Service Worker incluido
-- 🔧 **TypeScript** - Código tipado y robusto
+### 🎵 **Audio y Reproducción**
+- **6 botones de sonido personalizados** con colores únicos y efectos visuales
+- **Lazy loading de audio** - Carga diferida para optimizar rendimiento
+- **Bloqueo inteligente** - Previene superposición de audios
+- **Gestión de estado avanzada** - Control preciso de reproducción
 
-## 🚀 Demo en vivo
+### 📡 **Google Cast Integration**
+- **Cast SDK completo** - Integración nativa con Google Cast
+- **Detección automática** de dispositivos disponibles
+- **Reproducción remota** en Google Mini, Google Hub, Chromecast
+- **Fallback inteligente** - Cambio automático entre local y Cast
+
+### 🎨 **Diseño y UX**
+- **Glassmorphism moderno** - Efectos de cristal y blur
+- **Animaciones CSS avanzadas** - Transiciones suaves y naturales
+- **Diseño completamente responsivo** - Optimizado para móvil y desktop
+- **Accesibilidad mejorada** - ARIA labels y navegación por teclado
+
+### ⚡ **Rendimiento y Tecnología**
+- **PWA completa** - Instalable como app nativa
+- **Service Worker optimizado** - Funciona offline
+- **TypeScript estricto** - Código tipado y robusto
+- **SCSS modular** - Arquitectura de estilos escalable
+
+## 🚀 Demo en Vivo
 
 > **Nota:** Para usar Google Cast, la aplicación debe estar desplegada en HTTPS
 
 - **Desarrollo local:** `http://localhost:4001`
 - **Producción:** Despliega en Netlify, Vercel o GitHub Pages
 
-## 📁 Estructura del proyecto
+## 🏗️ Arquitectura del Proyecto
+
+### 📁 Estructura de Archivos
 
 ```
 voice-communicator/
-├── src/
-│   ├── app.ts              # Aplicación principal TypeScript
-│   ├── cast-manager.ts     # Gestor de Google Cast
-│   ├── cast-types.ts       # Tipos TypeScript para Cast
-│   ├── styles.scss         # Estilos SCSS con variables y mixins
-│   └── index.html          # Template HTML
-├── sound/                  # Archivos de audio MP3
-│   ├── Cris.mp3
-│   ├── Ivan.mp3
-│   ├── Josefina.mp3
-│   ├── Mimi.mp3
-│   ├── Rita.mp3
-│   └── Valentina.mp3
-├── dist/                   # Build de producción
-├── manifest.json           # Configuración PWA
-├── sw.js                   # Service Worker
-├── webpack.config.js       # Configuración Webpack
-├── tsconfig.json          # Configuración TypeScript
-└── package.json           # Dependencias y scripts
+├── src/                          # 🎯 Código fuente principal
+│   ├── app.ts                    # 🚀 Aplicación principal y orquestador
+│   ├── audio-manager.ts          # 🔊 Gestión de audio y lazy loading
+│   ├── cast-manager.ts           # 📡 Google Cast SDK y sesiones
+│   ├── cast-initializer.ts       # ⚙️ Inicialización de Cast Context
+│   ├── cast-player.ts            # ▶️ Reproductor para dispositivos Cast
+│   ├── cast-types.ts             # 📝 Tipos TypeScript para Cast API
+│   ├── cast-utils.ts             # 🛠️ Utilidades y helpers para Cast
+│   ├── ui-manager.ts             # 🎨 Gestión de interfaz y eventos DOM
+│   ├── pwa-manager.ts            # 📱 Service Worker y PWA features
+│   ├── config.ts                 # ⚙️ Configuración de sonidos y colores
+│   ├── index.html                # 🌐 Template HTML con Cast SDK
+│   ├── styles/                   # 🎨 Arquitectura SCSS modular
+│   │   ├── main.scss            # 📄 Punto de entrada principal
+│   │   ├── _index.scss          # 🔄 Reexportación con @forward
+│   │   ├── _variables.scss      # 📏 Variables, funciones y breakpoints
+│   │   ├── _colors.scss         # 🎨 Sistema de colores centralizado
+│   │   ├── _base.scss           # 🏗️ Reset y estilos base
+│   │   ├── _layout.scss         # 📐 Grid, header y layout
+│   │   ├── _components.scss     # 🧩 Botones y componentes UI
+│   │   ├── _animations.scss     # ✨ Keyframes y animaciones
+│   │   └── _utilities.scss      # 🛠️ Utilidades y responsive
+│   └── test/                     # 🧪 Tests unitarios básicos
+│       ├── setup.ts             # ⚙️ Configuración de entorno de tests
+│       ├── app.test.ts          # 🧪 Tests de aplicación principal
+│       ├── audio-manager.test.ts # 🔊 Tests de gestión de audio
+│       ├── cast-manager.test.ts # 📡 Tests de Google Cast
+│       ├── ui-manager.test.ts   # 🎨 Tests de interfaz de usuario
+│       └── pwa-manager.test.ts  # 📱 Tests de PWA features
+├── sound/                        # 🎵 Archivos de audio personalizables
+│   └── *.mp3                    # 🎤 Archivos de audio (configurables)
+├── dist/                         # 📦 Build de producción (generado)
+├── scripts/                      # 📜 Scripts de automatización
+├── manifest.json                 # 📱 Configuración PWA
+├── sw.js                         # 🔧 Service Worker para PWA
+├── icon.svg                      # 🎨 Icono de la aplicación
+├── webpack.config.js             # ⚙️ Configuración Webpack 5
+├── tsconfig.json                 # 📝 Configuración TypeScript
+├── vitest.config.ts              # 🧪 Configuración de tests
+├── tailwind.config.js            # 🎨 Configuración Tailwind CSS
+├── postcss.config.js             # 🔧 Configuración PostCSS
+└── package.json                  # 📦 Dependencias y scripts
 ```
 
-## 🛠️ Instalación y desarrollo
+### 🧩 Módulos Principales
 
-### Prerrequisitos
+#### **VoiceCommunicatorApp** (`app.ts`)
+- Orquestador principal que coordina todos los módulos
+- Gestión del ciclo de vida de la aplicación
+- Manejo de eventos globales y callbacks
+- Inicialización diferida esperando Google Cast API
+
+#### **AudioManager** (`audio-manager.ts`)
+- Lazy loading de audio - Carga bajo demanda
+- Gestión de elementos HTMLAudio con cache inteligente
+- Control de reproducción y eventos de audio
+- Optimización de memoria y recursos
+
+#### **CastManager** (`cast-manager.ts`)
+- Integración completa con Google Cast SDK
+- Detección de dispositivos y gestión de sesiones
+- Reproducción remota con fallback automático
+- Estados de conexión y callbacks de cambio
+
+#### **UIManager** (`ui-manager.ts`)
+- Creación dinámica de botones con DocumentFragment
+- Delegación de eventos para optimizar rendimiento
+- Gestión de estados visuales y accesibilidad
+- Notificaciones y feedback al usuario
+
+#### **PWAManager** (`pwa-manager.ts`)
+- Registro de Service Worker automático
+- Prompt de instalación nativo
+- Gestión de eventos PWA y lifecycle
+
+## 🛠️ Instalación y Desarrollo
+
+### 📋 Prerrequisitos
 
 - **Node.js** v18+ (recomendado v22.18.0)
 - **npm** v9+ (incluido con Node.js)
+- **Navegador moderno** con soporte para PWA
+- **HTTPS** para funcionalidades de Cast (en producción)
 
-### Instalación
+### ⚡ Instalación Rápida
 
 ```bash
 # Clonar el repositorio
@@ -70,223 +144,236 @@ cd voice-communicator
 
 # Instalar dependencias
 npm install
+
+# Iniciar desarrollo
+npm run dev
 ```
 
-### Scripts disponibles
+### 📜 Scripts Disponibles
 
 ```bash
-# Desarrollo con hot reload
+# 🚀 Desarrollo con hot reload
 npm run dev
-# Servidor en http://localhost:4001
+# Servidor en http://localhost:4001 con recarga automática
 
-# Build de producción
+# 📦 Build de producción
 npm run build
-# Genera archivos optimizados en dist/
+# Genera archivos optimizados en dist/ con tree-shaking
 
-# Verificar tipos TypeScript
+# 🔍 Verificar tipos TypeScript
 npm run type-check
+# Validación estricta sin compilar
+
+# 🧪 Ejecutar tests unitarios
+npm test
+# Tests básicos con Vitest
+
+# 🧪 Tests en modo watch
+npm run test:watch
+# Ejecuta tests automáticamente al cambiar archivos
 ```
 
-## 🎮 Uso de la aplicación
+## 🎮 Guía de Uso
 
-### Reproducción de sonidos
+### 🎵 Reproducción de Sonidos
 
-1. **Toca cualquier botón de sonido** para reproducir el audio
-2. **Los demás botones se bloquean** durante la reproducción
-3. **Espera a que termine** o toca el mismo botón para detener
+#### **Interfaz Principal**
+- **6 botones de sonido** con colores únicos y efectos glassmorphism
+- **Iconos SVG integrados** con nombres descriptivos
+- **Animaciones de hover** con transformaciones 3D
+- **Estados visuales claros** (normal, activo, deshabilitado)
 
-### Google Cast
+#### **Flujo de Reproducción**
+1. **Toca cualquier botón** para reproducir el audio correspondiente
+2. **Bloqueo automático** - Los demás botones se deshabilitan durante la reproducción
+3. **Indicador visual** - El botón activo muestra un anillo de color
+4. **Finalización** - Los botones se rehabilitan automáticamente al terminar
+5. **Interrupción** - Toca el mismo botón para detener la reproducción actual
 
-1. **Conectar dispositivo:**
-   - Toca el botón 📡 en la esquina superior derecha
-   - Selecciona tu Google Mini/Hub de la lista
-   - El botón se pondrá verde 🟢 cuando esté conectado
+### 📡 Google Cast Integration
 
-2. **Reproducir en Cast:**
-   - Con Cast conectado, los sonidos se reproducen en el altavoz
-   - Sin Cast, los sonidos se reproducen localmente
-   - Cambio automático y transparente
+#### **Requisitos para Cast**
+- **Dispositivos compatibles:** Google Mini, Google Hub, Chromecast Audio
+- **Red:** Mismo WiFi que el dispositivo de destino
+- **Protocolo:** HTTPS en producción (HTTP en desarrollo local)
+- **Navegador:** Chrome recomendado para mejor compatibilidad
 
-3. **Desconectar:**
-   - Toca el botón 📡 verde para desconectar
-   - Vuelve al modo de reproducción local
+#### **Proceso de Conexión**
+1. **Detección automática** - La app detecta dispositivos Cast disponibles
+2. **Botón Cast** (📡) aparece en la esquina superior derecha
+3. **Toca el botón Cast** para ver dispositivos disponibles
+4. **Selecciona tu dispositivo** de la lista
+5. **Conexión establecida** - El botón se vuelve verde con animación
 
-### Estados del botón Cast
+#### **Estados del Botón Cast**
+- 📡 **Gris/Deshabilitado** - No hay dispositivos disponibles
+- 📡 **Azul** - Dispositivos detectados, listo para conectar
+- 🔄 **Azul pulsante** - Conectando al dispositivo
+- 📡 **Verde brillante** - Conectado y listo para reproducir
+- ❌ **Rojo** - Error de conexión
 
-- 📡 **Gris** - No conectado
-- 🔄 **Azul pulsante** - Conectando...
-- 📡 **Verde brillante** - Conectado
+#### **Reproducción en Cast**
+- **Automática** - Los sonidos se reproducen automáticamente en el dispositivo Cast
+- **Fallback inteligente** - Si falla Cast, reproduce localmente
+- **Control unificado** - Misma interfaz para local y remoto
+- **Notificaciones** - Feedback visual del estado de reproducción
 
-## 📱 Instalación como PWA en Android
+## 📱 Progressive Web App (PWA)
 
-### Método 1: Desde el navegador
+### 🚀 Instalación como App Nativa
 
-1. **Abre la aplicación** en Chrome Android
-2. **Menú del navegador** (⋮) → "Instalar aplicación"
-3. **Confirma la instalación**
-4. ¡La app aparece en tu pantalla de inicio!
+#### **Método 1: Prompt Automático**
+La aplicación muestra automáticamente un prompt de instalación elegante cuando:
+- ✅ Se carga en un navegador compatible (Chrome, Edge, Firefox)
+- ✅ Cumple todos los requisitos de PWA
+- ✅ El usuario ha interactuado con la página
 
-### Método 2: Prompt automático
+#### **Método 2: Instalación Manual**
 
-La aplicación mostrará automáticamente un prompt de instalación cuando:
-- Se carga en un navegador compatible
-- Cumple los requisitos de PWA
-- El usuario ha interactuado con la página
+**En Android (Chrome):**
+1. Abre la aplicación en Chrome
+2. Menú del navegador (⋮) → "Instalar aplicación"
+3. Confirma la instalación en el diálogo
+4. ¡Listo! La app aparece en tu pantalla de inicio
 
-### Características de la PWA instalada
+**En iOS (Safari):**
+1. Abre la aplicación en Safari
+2. Botón compartir (📤) → "Añadir a pantalla de inicio"
+3. Personaliza el nombre si es necesario
+4. Toca "Añadir" para completar la instalación
 
-- ✅ **Icono en pantalla de inicio**
-- ✅ **Pantalla completa** (sin barra del navegador)
-- ✅ **Funciona offline** gracias al Service Worker
-- ✅ **Acceso a hardware** (micrófono, altavoces)
-- ✅ **Rendimiento nativo**
+**En Desktop (Chrome/Edge):**
+1. Icono de instalación en la barra de direcciones
+2. Click en "Instalar" en el prompt
+3. La app se abre en ventana independiente
 
-## 🔧 Tecnologías utilizadas
+### ✨ Características de la PWA Instalada
 
-### Frontend
-- **TypeScript 5.x** - Lenguaje tipado
-- **SCSS** - Preprocesador CSS con variables y mixins
-- **Webpack 5** - Bundler y servidor de desarrollo
-- **Google Cast SDK** - Integración con dispositivos Cast
+#### **Experiencia Nativa**
+- 🎯 **Icono personalizado** en pantalla de inicio
+- 🖼️ **Pantalla de splash** con branding
+- 📱 **Pantalla completa** sin barras del navegador
+- ⚡ **Inicio rápido** desde el icono
+- 🔄 **Actualizaciones automáticas** en segundo plano
 
-### PWA
-- **Web App Manifest** - Configuración de instalación
-- **Service Worker** - Cache offline y actualizaciones
-- **Responsive Design** - Adaptable a todas las pantallas
+#### **Funcionalidades Offline**
+- 🌐 **Service Worker optimizado** para cache inteligente
+- 📦 **Assets críticos** almacenados localmente
+- 🎵 **Sonidos precargados** para uso offline
+- 🔄 **Sincronización** cuando vuelve la conexión
 
-### Herramientas de desarrollo
-- **ts-loader** - Compilador TypeScript para Webpack
-- **sass-loader** - Compilador SCSS para Webpack
-- **HtmlWebpackPlugin** - Generación automática de HTML
-- **CopyWebpackPlugin** - Copia de assets estáticos
+## 🔧 Stack Tecnológico
 
-## 🎨 Personalización
+### 💻 **Frontend Core**
+- **TypeScript 5.x** - Lenguaje tipado con configuración estricta
+- **SCSS Modular** - Arquitectura de estilos con @use/@forward
+- **Webpack 5** - Bundler moderno con tree-shaking y HMR
+- **HTML5 Audio API** - Reproducción nativa optimizada
 
-### Añadir nuevos sonidos
+### 🎨 **Estilos y UI**
+- **Glassmorphism Design** - Efectos de cristal y blur modernos
+- **CSS Grid & Flexbox** - Layout responsivo avanzado
+- **Custom Properties** - Variables CSS dinámicas
+- **Keyframe Animations** - Animaciones fluidas y naturales
+- **SCSS Functions** - Utilidades como px-to-rem automático
+
+### 📡 **Integración y APIs**
+- **Google Cast SDK** - Integración completa con dispositivos Cast
+- **Web Audio API** - Control avanzado de audio
+- **Service Worker API** - Funcionalidades PWA y cache
+- **Intersection Observer** - Optimizaciones de rendimiento
+
+### 🧪 **Testing y Calidad**
+- **Vitest** - Framework de testing moderno y rápido
+- **TypeScript Strict Mode** - Verificación de tipos exhaustiva
+- **Tests básicos** - Verificación de inputs/outputs de funciones
+
+### 📦 **Build y Deployment**
+- **Webpack Dev Server** - Desarrollo con HMR
+- **Babel** - Transpilación para compatibilidad
+- **PostCSS** - Procesamiento avanzado de CSS
+- **Source Maps** - Debugging en desarrollo
+
+## ⚙️ Configuración y Personalización
+
+### 🎵 **Personalización de Sonidos**
+
+Para añadir o modificar sonidos:
 
 1. **Añade archivos MP3** a la carpeta `sound/`
-2. **Actualiza la configuración** en `src/app.ts`:
+2. **Actualiza la configuración** 
 
-```typescript
-const soundFiles: SoundFile[] = [
-    { name: 'Nuevo', filename: 'nuevo.mp3', color: '#FF5722' },
-    // ... otros sonidos
-];
+```bash
+npm run prestart
+
+
+3. **Los colores soportados** están definidos en `src/styles/_colors.scss`
+4. **Reconstruye** con `npm run build`
+
+### 📡 **Configuración de Google Cast**
+
+Para configurar Google Cast en producción:
+
+1. **Registra tu aplicación** en [Google Cast SDK Developer Console](https://cast.google.com/publish/)
+2. **Obtén tu Application ID**
+3. **Actualiza** `src/cast-initializer.ts` con tu ID
+
+## 🚀 Despliegue en Producción
+
+### **Netlify (Recomendado)**
+
+1. **Conecta tu repositorio** a Netlify
+2. **Configuración de build:**
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+3. **Deploy automático** en cada push
+
+### **Vercel**
+
+```bash
+# Instalar Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel --prod
 ```
 
-3. **Recompila** con `npm run build`
+### **GitHub Pages**
 
-### Cambiar colores
-
-Edita las variables SCSS en `src/styles.scss`:
-
-```scss
-$primary-color: #4CAF50;
-$secondary-color: #2196F3;
-$accent-color: #FF9800;
-```
-
-### Modificar animaciones
-
-Las animaciones están definidas en `src/styles.scss` con mixins reutilizables:
-
-```scss
-@mixin pulse-animation {
-  animation: pulse 0.6s ease-in-out;
-}
-```
-
-## 🐛 Solución de problemas
-
-### Google Cast no funciona
-
-**Problema:** "Google Cast SDK no disponible"
-
-**Soluciones:**
-1. **Verificar HTTPS:** Google Cast requiere HTTPS o localhost
-2. **Verificar red:** Dispositivo y Cast en la misma WiFi
-3. **Verificar navegador:** Usar Chrome o Edge
-4. **Verificar dispositivos:** Asegurar que Google Mini/Hub esté encendido
-
-### Audio no reproduce
-
-**Problema:** "Error al reproducir el sonido"
-
-**Soluciones:**
-1. **Interacción del usuario:** Toca la pantalla primero
-2. **Formato de audio:** Verificar que sean archivos MP3 válidos
-3. **Permisos:** Permitir reproducción automática en el navegador
-
-### PWA no se instala
-
-**Problema:** No aparece opción "Instalar aplicación"
-
-**Soluciones:**
-1. **HTTPS requerido:** Desplegar en servidor HTTPS
-2. **Manifest válido:** Verificar `manifest.json`
-3. **Service Worker:** Verificar que `sw.js` se cargue correctamente
-4. **Navegador compatible:** Usar Chrome, Edge o Firefox
-
-## 📊 Rendimiento
-
-### Métricas de build
-
-- **Bundle principal:** ~20 KB (minificado + gzipped)
-- **Archivos de audio:** ~525 KB total (6 archivos MP3)
-- **Assets PWA:** ~3 KB (manifest, service worker, iconos)
-- **Total:** ~548 KB
-
-### Optimizaciones incluidas
-
-- ✅ **Tree shaking** - Solo código usado
-- ✅ **Minificación** - JavaScript y CSS comprimidos
-- ✅ **Cache busting** - Hash en nombres de archivos
-- ✅ **Lazy loading** - Carga bajo demanda
-- ✅ **Service Worker** - Cache inteligente
+1. **Build local:** `npm run build`
+2. **Sube** la carpeta `dist/` a la rama `gh-pages`
+3. **Configura** GitHub Pages en la configuración del repositorio
 
 ## 🤝 Contribución
 
-¡Las contribuciones son bienvenidas! Para contribuir:
+### **Flujo de Desarrollo**
 
 1. **Fork** el repositorio
-2. **Crea una rama** para tu feature (`git checkout -b feature/amazing-feature`)
-3. **Commit** tus cambios (`git commit -m 'Add amazing feature'`)
-4. **Push** a la rama (`git push origin feature/amazing-feature`)
-5. **Abre un Pull Request**
+2. **Crea una rama** para tu feature: `git checkout -b feature/nueva-funcionalidad`
+3. **Haz commit** de tus cambios: `git commit -am 'Añadir nueva funcionalidad'`
+4. **Push** a la rama: `git push origin feature/nueva-funcionalidad`
+5. **Crea un Pull Request**
 
-### Guías de contribución
+### **Estándares de Código**
 
-- Usar **TypeScript** con tipos estrictos
-- Seguir el **estilo de código** existente
-- Añadir **tests** para nuevas funcionalidades
-- Actualizar **documentación** cuando sea necesario
+- **TypeScript estricto** - Todos los tipos deben estar definidos
+- **SCSS modular** - Usa la arquitectura de partials existente
+- **Comentarios descriptivos** - Especialmente en funciones complejas
+- **Tests unitarios básicos** - Para nuevas funcionalidades importantes
 
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
-## 👥 Autores
-
-- **Desarrollador Principal** - Implementación completa de la aplicación
-- **Diseño UX/UI** - Interfaz moderna y responsiva
-- **Integración Google Cast** - Funcionalidad de casting
-
-## 🙏 Agradecimientos
-
-- **Google Cast SDK** - Por la integración con dispositivos Cast
-- **TypeScript Team** - Por el excelente sistema de tipos
-- **Webpack Team** - Por las herramientas de build
-- **SCSS/Sass** - Por el preprocesador CSS
-
-## 📞 Soporte
+## 🆘 Soporte y Contacto
 
 Si tienes problemas o preguntas:
 
-1. **Revisa la documentación** en este README
+1. **Revisa la documentación** completa
 2. **Busca en Issues** existentes
 3. **Crea un nuevo Issue** con detalles del problema
-4. **Incluye logs** de la consola del navegador
+4. **Incluye información** del navegador, dispositivo y pasos para reproducir
 
 ---
 
-**¡Disfruta usando Voice Communicator!** 🎵📱✨
+**¡Disfruta usando Voice Communicator! 🎵✨**
