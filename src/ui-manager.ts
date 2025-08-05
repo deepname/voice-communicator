@@ -29,30 +29,38 @@ export class UIManager {
         const container = document.getElementById('soundGrid');
         if (!container) return;
 
+        const fragment = document.createDocumentFragment();
         soundFiles.forEach((sound: SoundFile) => {
             const button = document.createElement('button');
-            // Using a consistent class for selection
             button.className = 'sound-button text-white font-bold py-2 px-4 rounded-lg shadow-lg transform transition-transform duration-150 ease-in-out focus:outline-none focus:ring-4 focus:ring-opacity-50';
             button.textContent = sound.name;
             button.style.backgroundColor = sound.color;
-            // Set ring color to match the background for a cohesive look
             button.style.setProperty('--tw-ring-color', sound.color);
             button.dataset.sound = sound.name;
-
-            button.addEventListener('click', () => this.onPlaySound(sound.name));
-
-            container.appendChild(button);
+            button.setAttribute('aria-label', `Reproducir sonido ${sound.name}`);
+            button.style.willChange = 'transform, opacity'; // Optimización de animación
+            fragment.appendChild(button);
         });
+        container.appendChild(fragment);
     }
 
     private setupEventListeners(): void {
-        const googleBtn = document.getElementById('googleBtn');
-        const closeBtn = document.getElementById('closeBtn');
+        const soundGrid = document.getElementById('soundGrid');
+        if (soundGrid) {
+            soundGrid.addEventListener('click', (e: Event) => {
+                const target = e.target as HTMLElement;
+                if (target.classList.contains('sound-button') && target.dataset.sound) {
+                    this.onPlaySound(target.dataset.sound);
+                }
+            });
+        }
 
+        const googleBtn = document.getElementById('googleBtn');
         if (googleBtn) {
             googleBtn.addEventListener('click', () => this.onGoogleConnect());
         }
 
+        const closeBtn = document.getElementById('closeBtn');
         if (closeBtn) {
             closeBtn.addEventListener('click', () => this.onClose());
         }

@@ -38,7 +38,6 @@ export class VoiceCommunicatorApp {
 
     private init(): void {
         document.addEventListener('DOMContentLoaded', () => {
-            this.audioManager.preloadAudio();
             this.uiManager.initializeUI();
             this.pwaManager.setupPWA();
             this.setupGlobalEventListeners();
