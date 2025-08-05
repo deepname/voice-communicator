@@ -5,13 +5,13 @@ import { UIManager } from './ui-manager';
 import { PWAManager } from './pwa-manager';
 
 export class VoiceCommunicatorApp {
-    private castManager: CastManager;
-    private audioManager: AudioManager;
-    private uiManager: UIManager;
-    private pwaManager: PWAManager;
+    public castManager: CastManager;
+    public audioManager: AudioManager;
+    public uiManager: UIManager;
+    public pwaManager: PWAManager;
 
-    private isConnecting: boolean = false;
-    private isPlayingAudio: boolean = false;
+    public isConnecting: boolean = false;
+    public isPlayingAudio: boolean = false;
 
     constructor() {
         this.castManager = new CastManager();
@@ -36,7 +36,7 @@ export class VoiceCommunicatorApp {
         this.init();
     }
 
-    private init(): void {
+    public init(): void {
         document.addEventListener('DOMContentLoaded', () => {
             this.uiManager.initializeUI();
             this.pwaManager.setupPWA();
@@ -44,17 +44,17 @@ export class VoiceCommunicatorApp {
         });
     }
 
-    private handlePlay(soundName: string): void {
+    public handlePlay(soundName: string): void {
         this.isPlayingAudio = true;
         this.uiManager.disableOtherButtons(soundName);
     }
 
-    private handleEnded(soundName: string): void {
+    public handleEnded(soundName: string): void {
         this.isPlayingAudio = false;
         this.uiManager.enableAllButtons();
     }
 
-    private async playSound(soundName: string): Promise<void> {
+    public async playSound(soundName: string): Promise<void> {
         if (this.isConnecting || (this.isPlayingAudio && this.audioManager.getAudioElement(soundName)?.paused === false)) {
              // Si se pulsa el mismo botón, el audio manager lo detiene
             if (this.isPlayingAudio && this.audioManager.getAudioElement(soundName)?.paused === false) {
@@ -86,7 +86,7 @@ export class VoiceCommunicatorApp {
         }
     }
 
-    private async handleGoogleConnect(): Promise<void> {
+    public async handleGoogleConnect(): Promise<void> {
         if (this.isConnecting) return;
         this.isConnecting = true;
         this.uiManager.updateCastButtonState(); // Muestra estado conectando
@@ -113,7 +113,7 @@ export class VoiceCommunicatorApp {
         }
     }
 
-    private handleClose(): void {
+    public handleClose(): void {
                 if ((navigator as any).app && (navigator as any).app.exitApp) {
             (navigator as any).app.exitApp();
         } else {
@@ -122,7 +122,7 @@ export class VoiceCommunicatorApp {
         }
     }
 
-    private setupGlobalEventListeners(): void {
+    public setupGlobalEventListeners(): void {
         document.addEventListener('gesturestart', (e: Event) => e.preventDefault());
 
         window.addEventListener('orientationchange', () => {
@@ -131,4 +131,19 @@ export class VoiceCommunicatorApp {
     }
 }
 
-new VoiceCommunicatorApp();
+// Inicialización segura con Google Cast API
+(window as any).__onGCastApiAvailable = function(isAvailable: boolean) {
+  if (isAvailable) {
+    // Solo inicializar la app cuando la API de Cast está lista
+    const app = new VoiceCommunicatorApp();
+    app.castManager.initialize().then(() => {
+      // Ahora sí, inicializamos la UI y el resto
+      app.uiManager.initializeUI();
+      app.pwaManager.setupPWA();
+      app.setupGlobalEventListeners();
+    });
+  } else {
+    // Si la API no está disponible, inicializa la app sin Cast
+    new VoiceCommunicatorApp();
+  }
+};

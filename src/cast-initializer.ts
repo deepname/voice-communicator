@@ -66,7 +66,7 @@ export class CastInitializer {
     
     const options = {
       receiverApplicationId: 'CC1AD845',
-      autoJoinPolicy: window.cast.framework.AutoJoinPolicy.ORIGIN_SCOPED,
+
       language: 'es-ES',
       resumeSavedSession: false,
       androidReceiverCompatible: true
