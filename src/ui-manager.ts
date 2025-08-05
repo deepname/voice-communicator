@@ -30,17 +30,35 @@ export class UIManager {
         if (!container) return;
 
         const fragment = document.createDocumentFragment();
+        const micIconSVG = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mic-icon">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+        `;
+
         soundFiles.forEach((sound: SoundFile) => {
             const button = document.createElement('button');
-            button.className = 'sound-button text-white font-bold py-2 px-4 rounded-lg shadow-lg transform transition-transform duration-150 ease-in-out focus:outline-none focus:ring-4 focus:ring-opacity-50';
-            button.textContent = sound.name;
-            button.style.backgroundColor = sound.color;
-            button.style.setProperty('--tw-ring-color', sound.color);
+            button.className = 'sound-button'; // La clase base, el resto se define en SCSS
             button.dataset.sound = sound.name;
             button.setAttribute('aria-label', `Reproducir sonido ${sound.name}`);
-            button.style.willChange = 'transform, opacity'; // Optimización de animación
+
+            // Estructura interna del botón
+            button.innerHTML = `
+                <div class="icon-container">
+                    ${micIconSVG}
+                </div>
+                <span class="sound-name">${sound.name}</span>
+            `;
+
+            // Aplicamos el color de fondo dinámicamente
+            button.style.backgroundColor = sound.color;
+
             fragment.appendChild(button);
         });
+
         container.appendChild(fragment);
     }
 
@@ -99,7 +117,7 @@ export class UIManager {
                 button.disabled = true;
                 button.classList.add('opacity-50', 'cursor-not-allowed');
             } else {
-                button.classList.add('ring-4', 'scale-110');
+                button.classList.add('ring-4');
             }
         });
     }
@@ -109,7 +127,7 @@ export class UIManager {
         buttons.forEach((btn: Element) => {
             const button = btn as HTMLButtonElement;
             button.disabled = false;
-            button.classList.remove('opacity-50', 'cursor-not-allowed', 'ring-4', 'scale-110');
+            button.classList.remove('opacity-50', 'cursor-not-allowed', 'ring-4');
         });
     }
 

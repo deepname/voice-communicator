@@ -4,31 +4,37 @@
 // Botones de sonido modernos
 .sound-button {
   position: relative;
-  min-height: variables.rem(120);
-  border-radius: variables.rem(20);
-  background: colors.$glass-bg;
-  border: 1px solid colors.$glass-border;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  color: colors.$text-primary;
-  font-weight: 600;
-  font-size: variables.rem(17.6);
-  letter-spacing: 0.025em;
-  transition: all 0.4s variables.$ease-smooth;
+  display: flex;
+  align-items: center;
+  padding: variables.rem(12);
+  border-radius: variables.rem(16);
+  font-family: variables.$font-family;
+  font-weight: 500;
+  font-size: variables.rem(18);
+  color: white;
+  border: none;
   cursor: pointer;
-  overflow: hidden;
-  box-shadow: var(--shadow-soft);
-  
-  // Efecto de brillo animado
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, colors.$glass-bg-strong, transparent);
-    transition: left 0.6s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+  .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: variables.rem(48);
+    height: variables.rem(48);
+    margin-right: variables.rem(16);
+    border-radius: variables.rem(12);
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .mic-icon {
+      width: variables.rem(24);
+      height: variables.rem(24);
+      stroke: white;
+    }
   }
   
   &:hover {
