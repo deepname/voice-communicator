@@ -26,29 +26,22 @@ module.exports = (env, argv) => {
           },
           exclude: /node_modules/,
         },
-        {
-          test: /\.scss$/,
-          use: [
-            'style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: !isProduction
-              }
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: !isProduction
-              }
-            }
-          ],
-        },
+
         {
           test: /\.css$/,
           use: [
             'style-loader',
-            'css-loader'
+            'css-loader',
+            'postcss-loader'
+          ],
+        },
+        {
+          test: /\.scss$/,
+          use: [
+            'style-loader',
+            'css-loader',
+            'postcss-loader',
+            'sass-loader'
           ],
         },
       ],

@@ -26,14 +26,17 @@ export class UIManager {
     }
 
     private createSoundButtons(): void {
-                const container = document.getElementById('soundGrid');
+        const container = document.getElementById('soundGrid');
         if (!container) return;
 
         soundFiles.forEach((sound: SoundFile) => {
             const button = document.createElement('button');
-            button.className = 'sound-button';
+            // Using a consistent class for selection
+            button.className = 'sound-button text-white font-bold py-2 px-4 rounded-lg shadow-lg transform transition-transform duration-150 ease-in-out focus:outline-none focus:ring-4 focus:ring-opacity-50';
             button.textContent = sound.name;
             button.style.backgroundColor = sound.color;
+            // Set ring color to match the background for a cohesive look
+            button.style.setProperty('--tw-ring-color', sound.color);
             button.dataset.sound = sound.name;
 
             button.addEventListener('click', () => this.onPlaySound(sound.name));
@@ -86,9 +89,9 @@ export class UIManager {
             const button = btn as HTMLButtonElement;
             if (button.dataset.sound !== currentSoundName) {
                 button.disabled = true;
-                button.classList.add('disabled');
+                button.classList.add('opacity-50', 'cursor-not-allowed');
             } else {
-                button.classList.add('playing');
+                button.classList.add('ring-4', 'scale-110');
             }
         });
     }
@@ -98,45 +101,36 @@ export class UIManager {
         buttons.forEach((btn: Element) => {
             const button = btn as HTMLButtonElement;
             button.disabled = false;
-            button.classList.remove('disabled', 'playing');
+            button.classList.remove('opacity-50', 'cursor-not-allowed', 'ring-4', 'scale-110');
         });
     }
 
     public showNotification(message: string): void {
-        const notification = document.createElement('div');
-        notification.className = 'install-prompt'; // Reusing style
-        notification.textContent = message;
-        notification.style.bottom = '20px';
-        
-        document.body.appendChild(notification);
-        
+        const notificationEl = document.getElementById('notification');
+        if (!notificationEl) return;
+
+        notificationEl.textContent = message;
+        notificationEl.classList.remove('hidden');
+
         setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
+            notificationEl.classList.add('hidden');
         }, 3000);
     }
 
     public showInstallPrompt(deferredPrompt: any): void {
-        const installPrompt = document.createElement('div');
-        installPrompt.className = 'install-prompt';
-        installPrompt.textContent = '📱 Instalar aplicación';
-        
-        installPrompt.addEventListener('click', async () => {
+        const installPromptEl = document.getElementById('install-prompt');
+        const installBtn = document.getElementById('install-btn');
+        if (!installPromptEl || !installBtn) return;
+
+        installPromptEl.classList.remove('hidden');
+
+        installBtn.onclick = async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 console.log(`Resultado de instalación: ${outcome}`);
-                installPrompt.remove();
+                installPromptEl.classList.add('hidden');
             }
-        });
-        
-        document.body.appendChild(installPrompt);
-        
-        setTimeout(() => {
-            if (installPrompt.parentNode) {
-                installPrompt.remove();
-            }
-        }, 10000);
+        };
     }
 }
