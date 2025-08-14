@@ -1,6 +1,6 @@
 {
   "name": "voice-communicator-soundboard",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A TypeScript PWA soundboard for voice communication",
   "main": "index.ts",
   "scripts": {
