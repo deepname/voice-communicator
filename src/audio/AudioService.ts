@@ -1,19 +1,17 @@
 import { SoundFile, AudioObjects } from '../config';
 
 export interface AudioServiceEvents {
-    onPlay: (soundName: string) => void;
-    onEnded: (soundName: string) => void;
-    onError: (soundName: string, error: any) => void;
+    onSoundStarted?: (soundName: string) => void;
+    onSoundEnded?: (soundName: string) => void;
+    onSoundError?: (soundName: string, error: Error) => void;
 }
 
 export class AudioService {
     private audioObjects: AudioObjects = {};
-    private events: AudioServiceEvents | null = null;
+    private events?: AudioServiceEvents;
 
     constructor(events?: AudioServiceEvents) {
-        if (events) {
-            this.events = events;
-        }
+        this.events = events;
     }
 
     public createAudioElement(sound: SoundFile): HTMLAudioElement {
@@ -29,48 +27,49 @@ export class AudioService {
         // Configurar eventos
         audio.addEventListener('error', (e: Event) => {
             console.error(`Error cargando audio: ${sound.filename}`, e);
-            this.events.onError(sound.name, e);
+            this.events?.onSoundError?.(sound.name, new Error(`Error cargando audio: ${sound.filename}`));
         });
 
         audio.addEventListener('play', () => {
-            this.events.onPlay(sound.name);
+            this.events?.onSoundStarted?.(sound.name);
         });
 
         audio.addEventListener('ended', () => {
-            this.events.onEnded(sound.name);
-        });
-
-        audio.addEventListener('pause', () => {
-            // Solo notificar ended si se pausó manualmente (no por ended natural)
-            if (audio.currentTime > 0 && audio.currentTime < audio.duration) {
-                this.events.onEnded(sound.name);
-            }
+            this.events?.onSoundEnded?.(sound.name);
         });
 
         this.audioObjects[sound.name] = audio;
         return audio;
     }
 
-    public getAudioElement(soundName: string): HTMLAudioElement | undefined {
-        return this.audioObjects[soundName];
+    public getAudioElement(soundName: string): HTMLAudioElement | null {
+        return this.audioObjects[soundName] || null;
     }
 
-    public async playSound(soundName: string, soundFile: SoundFile): Promise<void> {
+    public async playSound(soundName: string, soundFile?: SoundFile): Promise<void> {
         let audio = this.getAudioElement(soundName);
 
         // Crear elemento de audio si no existe (lazy loading)
-        if (!audio) {
+        if (!audio && soundFile) {
             console.log(`Cargando ${soundName} bajo demanda...`);
             audio = this.createAudioElement(soundFile);
         }
 
+        if (!audio) {
+            console.error(`No se pudo cargar el audio para ${soundName}`);
+            return;
+        }
+
+        // Pausar cualquier sonido que esté reproduciéndose
+        this.stopAll();
+
         try {
             audio.currentTime = 0;
             await audio.play();
+            console.log(`Reproduciendo: ${soundName}`);
         } catch (error) {
-            console.error(`Error al reproducir ${soundName}:`, error);
-            this.events.onError(soundName, error);
-            throw error;
+            console.error(`Error reproduciendo ${soundName}:`, error);
+            this.events?.onSoundError?.(soundName, error as Error);
         }
     }
 
@@ -82,10 +81,13 @@ export class AudioService {
         }
     }
 
-    public stopAllSounds(): void {
-        for (const soundName in this.audioObjects) {
-            this.stopSound(soundName);
-        }
+    public stopAll(): void {
+        Object.values(this.audioObjects).forEach(audio => {
+            if (!audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        });
     }
 
     public isPlaying(soundName: string): boolean {
@@ -95,6 +97,28 @@ export class AudioService {
 
     public getLoadedSounds(): string[] {
         return Object.keys(this.audioObjects);
+    }
+
+    public setEventHandlers(events: AudioServiceEvents): void {
+        this.events = events;
+    }
+
+    public handleSoundEnded(soundName: string): void {
+        this.events?.onSoundEnded?.(soundName);
+    }
+
+    public handleSoundError(soundName: string, error: Error): void {
+        this.events?.onSoundError?.(soundName, error);
+    }
+
+    public getCurrentlyPlaying(): string[] {
+        const playing: string[] = [];
+        for (const [soundName, audio] of Object.entries(this.audioObjects)) {
+            if (!audio.paused) {
+                playing.push(soundName);
+            }
+        }
+        return playing;
     }
 
     public preloadSound(sound: SoundFile): void {
@@ -108,85 +132,13 @@ export class AudioService {
     }
 
     public dispose(): void {
-        this.stopAllSounds();
+        this.stopAll();
         for (const soundName in this.audioObjects) {
             const audio = this.audioObjects[soundName];
             audio.removeEventListener('play', () => {});
             audio.removeEventListener('ended', () => {});
             audio.removeEventListener('error', () => {});
-            audio.removeEventListener('pause', () => {});
         }
         this.audioObjects = {};
-    }
-
-    // Methods expected by tests
-    public setEventHandlers(events: AudioServiceEvents): void {
-        this.events = events;
-    }
-
-    public handleSoundEnded(soundName: string): void {
-        if (this.events) {
-            this.events.onEnded(soundName);
-        }
-    }
-
-    public handleSoundError(soundName: string, error: any): void {
-        if (this.events) {
-            this.events.onError(soundName, error);
-        }
-    }
-
-    public getCurrentlyPlaying(): string[] {
-        const playing: string[] = [];
-        for (const soundName in this.audioObjects) {
-            if (this.isPlaying(soundName)) {
-                playing.push(soundName);
-            }
-        }
-        return playing;
-    }
-
-    // Overload playSound to work with just soundName for tests
-    public async playSound(soundName: string, soundFile?: SoundFile): Promise<void> {
-        // If no soundFile provided, try to find it in loaded sounds or create a mock
-        if (!soundFile) {
-            const audio = this.getAudioElement(soundName);
-            if (audio) {
-                try {
-                    audio.currentTime = 0;
-                    await audio.play();
-                    if (this.events) {
-                        this.events.onPlay(soundName);
-                    }
-                } catch (error) {
-                    if (this.events) {
-                        this.events.onError(soundName, error);
-                    }
-                    throw error;
-                }
-                return;
-            }
-            // Create a mock sound file for testing
-            soundFile = { name: soundName, url: `${soundName}.mp3`, color: '#000000' };
-        }
-
-        let audio = this.getAudioElement(soundName);
-
-        // Crear elemento de audio si no existe (lazy loading)
-        if (!audio) {
-            console.log(`Cargando ${soundName} bajo demanda...`);
-            audio = this.createAudioElement(soundFile);
-        }
-
-        try {
-            audio.currentTime = 0;
-            await audio.play();
-        } catch (error) {
-            console.error(`Error al reproducir ${soundName}:`, error);
-            if (this.events) {
-                this.events.onError(soundName, error);
-            }
-            throw error;
-        }
     }
 }

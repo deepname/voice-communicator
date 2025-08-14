@@ -6,7 +6,7 @@ import { ApplicationLogic } from './ApplicationLogic';
 import { AudioService, AudioServiceEvents } from '../audio';
 import { CastService, CastServiceEvents } from '../cast';
 import { PWAService, PWAServiceEvents } from '../pwa';
-import { DataRepository, DataAdapters, AppData, CastData, SoundData } from '../data';
+import { DataRepository, DataAdapters, AppData, CastData, SoundData } from '../data/DataModels';
 
 // Configuración
 import { soundFiles } from '../config';
@@ -203,7 +203,7 @@ export class ApplicationCoordinator {
         }
 
         // Detener cualquier sonido que esté reproduciéndose
-        this.audioService.stopAllSounds();
+        this.audioService.stopAll();
 
         // Reproducir el nuevo sonido
         await this.playSound(soundName);
@@ -284,6 +284,21 @@ export class ApplicationCoordinator {
             
             if (success) {
                 this.applicationLogic.setPlayingAudio(true, soundName);
+                // Inicializar AudioService con eventos
+                this.audioService = new AudioService({
+                    onSoundStarted: (soundName: string) => {
+                        console.log(`Reproduciendo: ${soundName}`);
+                        this.uiComponents.updateSoundButton(soundName, 'playing');
+                    },
+                    onSoundEnded: (soundName: string) => {
+                        console.log(`Terminó: ${soundName}`);
+                        this.uiComponents.updateSoundButton(soundName, 'stopped');
+                    },
+                    onSoundError: (soundName: string, error: Error) => {
+                        console.error(`Error en audio: ${soundName}`, error);
+                        this.uiComponents.updateSoundButton(soundName, 'error');
+                    }
+                });
                 // Simular finalización después de 5 segundos (tiempo estimado)
                 setTimeout(() => {
                     this.applicationLogic.setPlayingAudio(false);
@@ -355,14 +370,10 @@ export class ApplicationCoordinator {
         } else {
             const soundFile = soundFiles.find(s => s.name === soundName);
             if (soundFile) {
-                // Create sound data object directly instead of using non-existent method
-                const soundData = {
-                    name: soundName,
-                    lastPlayed: new Date(),
-                    playCount: 1,
-                    isLoaded: true,
-                    isFavorite: false
-                };
+                // Crear SoundData usando el adaptador
+                const soundData = DataAdapters.soundFileToSoundData(soundFile);
+                soundData.lastPlayed = new Date();
+                soundData.isLoaded = true;
                 soundsData.push(soundData);
             }
         }

@@ -126,6 +126,29 @@ export class UIComponents {
         });
     }
 
+    public updateSoundButton(soundName: string, state: 'playing' | 'stopped' | 'error'): void {
+        const button = document.querySelector(`[data-sound="${soundName}"]`) as HTMLButtonElement;
+        if (!button) return;
+
+        // Remover todos los estados anteriores
+        button.classList.remove('playing', 'stopped', 'error', 'ring-4', 'opacity-50');
+
+        switch (state) {
+            case 'playing':
+                button.classList.add('ring-4', 'playing');
+                button.disabled = false;
+                break;
+            case 'stopped':
+                button.classList.remove('ring-4', 'playing');
+                button.disabled = false;
+                break;
+            case 'error':
+                button.classList.add('error', 'opacity-50');
+                button.disabled = true;
+                break;
+        }
+    }
+
     public updateCastButton(isConnected: boolean, isConnecting: boolean, deviceName?: string, devicesAvailable: boolean = true): void {
         const button = document.getElementById('googleBtn') as HTMLButtonElement;
         if (!button) return;
@@ -211,22 +234,7 @@ export class UIComponents {
         }
     }
 
-    public updateCastButton(isConnected: boolean, deviceName?: string): void {
-        const button = document.getElementById('googleBtn') as HTMLButtonElement;
-        if (!button) return;
 
-        if (isConnected) {
-            button.textContent = '📡';
-            button.classList.add('connected');
-            button.classList.remove('connecting');
-            button.disabled = false;
-            button.title = `Conectado a ${deviceName || 'dispositivo Cast'}`;
-        } else {
-            button.textContent = '📡';
-            button.classList.remove('connected', 'connecting');
-            button.title = 'Conectar a Google Cast';
-        }
-    }
 
     public getRenderedButtons(): HTMLElement[] {
         const buttons = document.querySelectorAll('.sound-button');
