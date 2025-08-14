@@ -95,18 +95,20 @@ module.exports = (env, argv) => {
     devServer: {
       static: {
         directory: path.join(__dirname, 'dist'),
+        publicPath: '/',
       },
-      compress: true,
-      port: 4001,
-      open: false,
       hot: true,
+      host: '0.0.0.0',
+      port: 4001,
+      compress: true,
       historyApiFallback: true,
+      open: false,
       client: {
         overlay: {
           errors: true,
-          warnings: false
-        }
-      }
+          warnings: false,
+        },
+      },
     },
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     stats: {
