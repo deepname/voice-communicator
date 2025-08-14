@@ -47,20 +47,47 @@
 
 ## 🏗️ Arquitectura del Proyecto
 
+### 🎯 Arquitectura por Dominio
+
+El proyecto utiliza una **arquitectura por dominio** (Domain-Driven Architecture) que organiza el código por funcionalidades específicas en lugar de por capas técnicas. Cada dominio es independiente y tiene responsabilidades claras:
+
+- **🎵 Audio**: Gestión de reproducción de sonidos y lazy loading
+- **📡 Cast**: Integración completa con Google Cast SDK
+- **🎨 UI**: Componentes de interfaz de usuario y eventos DOM
+- **📱 PWA**: Funcionalidades de Progressive Web App
+- **💾 Data**: Modelos de datos y persistencia en localStorage
+- **🏗️ Core**: Lógica central, coordinación y reglas de negocio
+
 ### 📁 Estructura de Archivos
 
 ```
 voice-communicator/
 ├── src/                          # 🎯 Código fuente principal
-│   ├── app.ts                    # 🚀 Aplicación principal y orquestador
-│   ├── audio-manager.ts          # 🔊 Gestión de audio y lazy loading
-│   ├── cast-manager.ts           # 📡 Google Cast SDK y sesiones
-│   ├── cast-initializer.ts       # ⚙️ Inicialización de Cast Context
-│   ├── cast-player.ts            # ▶️ Reproductor para dispositivos Cast
-│   ├── cast-types.ts             # 📝 Tipos TypeScript para Cast API
-│   ├── cast-utils.ts             # 🛠️ Utilidades y helpers para Cast
-│   ├── ui-manager.ts             # 🎨 Gestión de interfaz y eventos DOM
-│   ├── pwa-manager.ts            # 📱 Service Worker y PWA features
+│   ├── audio/                    # 🎵 Dominio de Audio
+│   │   ├── AudioService.ts       # 🔊 Gestión de reproducción y lazy loading
+│   │   └── index.ts              # 📤 Exportaciones del dominio
+│   ├── cast/                     # 📡 Dominio de Google Cast
+│   │   ├── CastService.ts        # 📡 Servicio principal de Cast
+│   │   ├── cast-manager.ts       # 🎛️ Gestor de sesiones Cast
+│   │   ├── cast-initializer.ts   # ⚙️ Inicialización de Cast Context
+│   │   ├── cast-player.ts        # ▶️ Reproductor para dispositivos Cast
+│   │   ├── cast-types.ts         # 📝 Tipos TypeScript para Cast API
+│   │   ├── cast-utils.ts         # 🛠️ Utilidades y helpers para Cast
+│   │   └── index.ts              # 📤 Exportaciones del dominio
+│   ├── ui/                       # 🎨 Dominio de Interfaz de Usuario
+│   │   ├── UIComponents.ts       # 🧩 Componentes y gestión de eventos DOM
+│   │   └── index.ts              # 📤 Exportaciones del dominio
+│   ├── pwa/                      # 📱 Dominio PWA
+│   │   ├── PWAService.ts         # 📱 Service Worker y PWA features
+│   │   └── index.ts              # 📤 Exportaciones del dominio
+│   ├── data/                     # 💾 Dominio de Datos
+│   │   ├── DataModels.ts         # 📊 Modelos y persistencia localStorage
+│   │   └── index.ts              # 📤 Exportaciones del dominio
+│   ├── core/                     # 🏗️ Lógica Central
+│   │   ├── ApplicationCoordinator.ts # 🎯 Coordinador principal de la app
+│   │   ├── ApplicationLogic.ts   # 🧠 Lógica de negocio y validaciones
+│   │   └── index.ts              # 📤 Exportaciones del dominio
+│   ├── app.ts                    # 🚀 Punto de entrada y compatibilidad legacy
 │   ├── config.ts                 # ⚙️ Configuración de sonidos y colores
 │   ├── index.html                # 🌐 Template HTML con Cast SDK
 │   ├── styles/                   # 🎨 Arquitectura SCSS modular

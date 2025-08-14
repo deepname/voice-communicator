@@ -1,149 +1,70 @@
-import './styles/main.scss';
-import { CastManager } from './cast-manager';
-import { AudioManager } from './audio-manager';
-import { UIManager } from './ui-manager';
-import { PWAManager } from './pwa-manager';
+// Archivo de compatibilidad - Redirige a la nueva arquitectura por dominio
+import { ApplicationCoordinator } from './core';
 
+// Mantener la clase original para compatibilidad hacia atrás
 export class VoiceCommunicatorApp {
-    public castManager: CastManager;
-    public audioManager: AudioManager;
-    public uiManager: UIManager;
-    public pwaManager: PWAManager;
-
-    public isConnecting: boolean = false;
-    public isPlayingAudio: boolean = false;
+    private coordinator: ApplicationCoordinator;
 
     constructor() {
-        this.castManager = new CastManager();
-        this.audioManager = new AudioManager(
-            (soundName) => this.handlePlay(soundName),
-            (soundName) => this.handleEnded(soundName)
-        );
-        this.uiManager = new UIManager(
-            this.castManager,
-            (soundName) => this.playSound(soundName),
-            () => this.handleGoogleConnect(),
-            () => this.handleClose()
-        );
-        this.pwaManager = new PWAManager(
-            (prompt) => this.uiManager.showInstallPrompt(prompt)
-        );
-
-        this.castManager.onStateChange(() => {
-            setTimeout(() => this.uiManager.updateCastButtonState(), 500);
-        });
-
-        this.init();
+        console.warn('VoiceCommunicatorApp está deprecated. Use ApplicationCoordinator directamente.');
+        this.coordinator = new ApplicationCoordinator();
     }
 
-    public init(): void {
-        document.addEventListener('DOMContentLoaded', () => {
-            this.uiManager.initializeUI();
-            this.pwaManager.setupPWA();
-            this.setupGlobalEventListeners();
-        });
-    }
-
-    public handlePlay(soundName: string): void {
-        this.isPlayingAudio = true;
-        this.uiManager.disableOtherButtons(soundName);
-    }
-
-    public handleEnded(soundName: string): void {
-        this.isPlayingAudio = false;
-        this.uiManager.enableAllButtons();
-    }
-
+    // Métodos de compatibilidad que redirigen a la nueva arquitectura
     public async playSound(soundName: string): Promise<void> {
-        if (this.isConnecting || (this.isPlayingAudio && this.audioManager.getAudioElement(soundName)?.paused === false)) {
-             // Si se pulsa el mismo botón, el audio manager lo detiene
-            if (this.isPlayingAudio && this.audioManager.getAudioElement(soundName)?.paused === false) {
-                this.audioManager.stopAll();
-                this.handleEnded(soundName);
-            }
-            return;
-        }
-
-        if (this.castManager.isConnected()) {
-            try {
-                const audio = this.audioManager.getAudioElement(soundName);
-                if (!audio) return;
-
-                const fullUrl = this.castManager.getFullAudioUrl(audio.src);
-                const success = await this.castManager.playAudioOnCast(fullUrl, soundName);
-                if (success) {
-                    this.uiManager.disableOtherButtons(soundName);
-                    setTimeout(() => this.uiManager.enableAllButtons(), 5000); 
-                } else {
-                    this.uiManager.showNotification('❌ Error al reproducir en Cast');
-                }
-            } catch (error) {
-                console.error('Error al castear audio:', error);
-                this.uiManager.showNotification('❌ Error al enviar audio a Cast');
-            }
-        } else {
-            this.audioManager.playSound(soundName);
-        }
-    }
-
-    public async handleGoogleConnect(): Promise<void> {
-        if (this.isConnecting) return;
-        this.isConnecting = true;
-        this.uiManager.updateCastButtonState(); // Muestra estado conectando
-
-        try {
-            if (this.castManager.isConnected()) {
-                await this.castManager.stopCasting();
-                this.uiManager.showNotification('👋 Desconectado de Cast');
-            } else {
-                const connected = await this.castManager.startCasting();
-                if (connected) {
-                    const deviceName = this.castManager.getDeviceName();
-                    this.uiManager.showNotification(`✅ Conectado a ${deviceName}`);
-                } else {
-                    this.uiManager.showNotification('ℹ️ No se seleccionó ningún dispositivo Cast');
-                }
-            }
-        } catch (error) {
-            console.error('Error conectando a Cast:', error);
-            this.uiManager.showNotification('❌ Error al conectar con Google Cast');
-        } finally {
-            this.isConnecting = false;
-            this.uiManager.updateCastButtonState();
-        }
+        // El coordinator maneja esto internamente a través de los eventos de UI
+        console.warn('playSound está deprecated. Use la interfaz de usuario para reproducir sonidos.');
     }
 
     public handleClose(): void {
-                if ((navigator as any).app && (navigator as any).app.exitApp) {
-            (navigator as any).app.exitApp();
-        } else {
-            window.close();
-            this.uiManager.showNotification('Para cerrar, usa el gestor de apps de tu dispositivo.');
-        }
+        // El coordinator maneja esto internamente
+        console.warn('handleClose está deprecated. Use el botón de cerrar en la interfaz.');
     }
 
-    public setupGlobalEventListeners(): void {
-        document.addEventListener('gesturestart', (e: Event) => e.preventDefault());
+    // Getters para acceso a la nueva arquitectura
+    public getCoordinator(): ApplicationCoordinator {
+        return this.coordinator;
+    }
 
-        window.addEventListener('orientationchange', () => {
-            setTimeout(() => window.scrollTo(0, 0), 100);
-        });
+    // Métodos legacy para mantener compatibilidad
+    public get castManager() {
+        return this.coordinator.getCastService().getCastManager();
+    }
+
+    public get isConnecting() {
+        return this.coordinator.getApplicationLogic().isConnecting();
+    }
+
+    public get isPlayingAudio() {
+        return this.coordinator.getApplicationLogic().isPlayingAudio();
     }
 }
 
-// Inicialización segura con Google Cast API
+// Inicialización segura con Google Cast API - Ahora usa Arquitectura por Capas
 (window as any).__onGCastApiAvailable = function(isAvailable: boolean) {
-  if (isAvailable) {
-    // Solo inicializar la app cuando la API de Cast está lista
-    const app = new VoiceCommunicatorApp();
-    app.castManager.initialize().then(() => {
-      // Ahora sí, inicializamos la UI y el resto
-      app.uiManager.initializeUI();
-      app.pwaManager.setupPWA();
-      app.setupGlobalEventListeners();
-    });
-  } else {
-    // Si la API no está disponible, inicializa la app sin Cast
-    new VoiceCommunicatorApp();
-  }
+    console.log('Google Cast API disponible:', isAvailable);
+    if (isAvailable) {
+        // Solo inicializar Cast cuando la API esté lista
+        const coordinator = new ApplicationCoordinator();
+        coordinator.getCastService().initialize().catch((error) => {
+            console.warn('Error inicializando Cast API:', error);
+            // La app continúa funcionando sin Cast
+        });
+    }
 };
+
+// Inicializar la aplicación inmediatamente, sin esperar a Google Cast
+// Esto asegura que los botones aparezcan incluso si Cast no está disponible
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Inicializando Voice Communicator con Arquitectura por Capas');
+    new ApplicationCoordinator();
+});
+
+// Fallback: Si DOMContentLoaded ya pasó, inicializar inmediatamente
+if (document.readyState === 'loading') {
+    // DOMContentLoaded se ejecutará
+} else {
+    // DOM ya está listo
+    console.log('🚀 Inicializando Voice Communicator (DOM ya listo)');
+    new ApplicationCoordinator();
+}

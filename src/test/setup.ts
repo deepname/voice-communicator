@@ -1,90 +1,67 @@
-// Setup simple para tests
-import { vi } from 'vitest';
+// Test setup configuration
+import { beforeEach } from 'vitest';
 
-// Mock básico del Google Cast SDK
-Object.defineProperty(window, 'cast', {
-  value: {
-    framework: {
-      CastContext: {
-        getInstance: vi.fn(() => ({
-          setOptions: vi.fn(),
-          addEventListener: vi.fn(),
-          getCastState: vi.fn(() => 'NOT_CONNECTED'),
-          getCurrentSession: vi.fn(() => null),
-          requestSession: vi.fn()
-        }))
-      },
-      AutoJoinPolicy: {
-        ORIGIN_SCOPED: 'origin_scoped'
-      },
-      CastState: {
-        NO_DEVICES_AVAILABLE: 'NO_DEVICES_AVAILABLE',
-        NOT_CONNECTED: 'NOT_CONNECTED',
-        CONNECTING: 'CONNECTING',
-        CONNECTED: 'CONNECTED'
-      },
-      CastContextEventType: {
-        CAST_STATE_CHANGED: 'caststatechanged',
-        SESSION_STATE_CHANGED: 'sessionstatechanged'
-      }
-    }
-  },
-  writable: true
+// Mock DOM environment
+beforeEach(() => {
+    // Reset DOM
+    document.body.innerHTML = `
+        <div id="app-container">
+            <header>
+                <button id="closeBtn">✕</button>
+                <h1>Voice Communicator</h1>
+                <button id="googleBtn">📡</button>
+            </header>
+            <main id="soundGrid" class="flex-grow p-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- Los botones se generarán dinámicamente -->
+            </main>
+            <div id="install-prompt" class="hidden">
+                <span>Instalar la aplicación para una mejor experiencia.</span>
+                <button id="install-btn">Instalar</button>
+            </div>
+            <div id="notification" class="hidden">Notificación</div>
+        </div>
+    `;
+
+    // Mock localStorage
+    const localStorageMock = {
+        getItem: vi.fn(),
+        setItem: vi.fn(),
+        removeItem: vi.fn(),
+        clear: vi.fn(),
+    };
+    Object.defineProperty(window, 'localStorage', {
+        value: localStorageMock,
+        writable: true,
+    });
+
+    // Mock Audio constructor
+    global.Audio = vi.fn().mockImplementation(() => ({
+        play: vi.fn().mockResolvedValue(undefined),
+        pause: vi.fn(),
+        load: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        currentTime: 0,
+        duration: 0,
+        paused: true,
+        ended: false,
+    }));
+
+    // Mock Google Cast API
+    global.cast = {
+        framework: {
+            CastContext: {
+                getInstance: vi.fn().mockReturnValue({
+                    setOptions: vi.fn(),
+                    requestSession: vi.fn(),
+                    getCurrentSession: vi.fn(),
+                    addEventListener: vi.fn(),
+                    removeEventListener: vi.fn(),
+                }),
+            },
+            SessionManager: vi.fn(),
+            RemotePlayer: vi.fn(),
+            RemotePlayerController: vi.fn(),
+        },
+    };
 });
-
-// Mock básico de Audio
-class MockAudio {
-  src: string = '';
-  currentTime: number = 0;
-  paused: boolean = true;
-  
-  constructor(src?: string) {
-    if (src) this.src = src;
-  }
-  
-  play = vi.fn().mockResolvedValue(undefined);
-  pause = vi.fn();
-  load = vi.fn();
-  
-  addEventListener = vi.fn();
-  removeEventListener = vi.fn();
-}
-
-Object.defineProperty(window, 'Audio', {
-  value: MockAudio,
-  writable: true
-});
-
-// Mock de localStorage
-const localStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-  length: 0,
-  key: vi.fn()
-};
-
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-  writable: true
-});
-
-// Mock de location
-Object.defineProperty(window, 'location', {
-  value: {
-    protocol: 'http:',
-    hostname: 'localhost',
-    origin: 'http://localhost:4001',
-    pathname: '/'
-  },
-  writable: true
-});
-
-// Mock de console para tests silenciosos
-global.console = {
-  ...console,
-  log: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn()
-};
