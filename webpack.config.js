@@ -50,10 +50,31 @@ module.exports = (env, argv) => {
       extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-      filename: 'bundle.[contenthash].js',
+      filename: '[name].[contenthash].js',
+      chunkFilename: '[name].[contenthash].chunk.js',
       path: path.resolve(__dirname, 'dist'),
       clean: true,
       publicPath: '/'
+    },
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            enforce: true
+          }
+        }
+      },
+      usedExports: true,
+      sideEffects: false
     },
     plugins: [
       new Dotenv(),

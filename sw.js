@@ -1,16 +1,9 @@
-const CACHE_NAME = 'voice-communicator-v1';
+const CACHE_NAME = 'voice-communicator-v2.0.0';
 const urlsToCache = [
   './',
   './index.html',
-  './styles.css',
-  './app.js',
   './manifest.json',
-  './sound/Cris.mp3',
-  './sound/Ivan.mp3',
-  './sound/Josefina.mp3',
-  './sound/Mimi.mp3',
-  './sound/Rita.mp3',
-  './sound/Valentina.mp3'
+  // Audio files - dynamically generated
 ];
 
 // Instalar service worker y cachear recursos
@@ -87,11 +80,4 @@ self.addEventListener('fetch', (event) => {
         }
       })
   );
-});
-
-// Manejar mensajes del cliente
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
 });

@@ -22,7 +22,7 @@ export class AudioService {
         }
 
         const audio = new Audio();
-        audio.preload = 'auto';
+        audio.preload = 'metadata'; // Changed from 'auto' to 'metadata' for better performance
         audio.src = `sound/${sound.filename}`;
         audio.crossOrigin = 'anonymous';
 
