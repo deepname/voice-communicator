@@ -1,6 +1,6 @@
 {
   "name": "voice-communicator-soundboard",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A TypeScript PWA soundboard for voice communication",
   "main": "index.ts",
   "scripts": {
@@ -13,7 +13,12 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "docker:dev": "docker compose up voice-communicator-dev",
+    "docker:prod": "docker compose up voice-communicator-prod",
+    "docker:build": "docker build -t voice-communicator .",
+    "docker:build-dev": "docker build -f Dockerfile.dev -t voice-communicator-dev .",
+    "docker:stop": "docker compose down"
   },
   "dependencies": {
     "typescript": "^5.0.0"

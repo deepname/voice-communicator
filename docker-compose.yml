@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Servicio de desarrollo
+  voice-communicator-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4001:4001"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+
+  # Servicio de producción
+  voice-communicator-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - NODE_ENV=production
+
+  # Nginx para desarrollo (opcional)
+  nginx-dev:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - voice-communicator-dev
+    profiles:
+      - nginx
