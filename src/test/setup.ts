@@ -1,5 +1,5 @@
 // Test setup configuration
-import { beforeEach } from 'vitest';
+import { beforeEach, vi } from 'vitest';
 
 // Mock DOM environment
 beforeEach(() => {
@@ -48,20 +48,36 @@ beforeEach(() => {
     }));
 
     // Mock Google Cast API
-    global.cast = {
-        framework: {
-            CastContext: {
-                getInstance: vi.fn().mockReturnValue({
-                    setOptions: vi.fn(),
-                    requestSession: vi.fn(),
-                    getCurrentSession: vi.fn(),
-                    addEventListener: vi.fn(),
-                    removeEventListener: vi.fn(),
-                }),
+    (global as any).window = {
+        ...global.window,
+        location: {
+            protocol: 'https:',
+            hostname: 'localhost'
+        },
+        cast: {
+            framework: {
+                CastContext: {
+                    getInstance: vi.fn().mockReturnValue({
+                        setOptions: vi.fn(),
+                        requestSession: vi.fn(),
+                        getCurrentSession: vi.fn(),
+                        addEventListener: vi.fn(),
+                        removeEventListener: vi.fn(),
+                    }),
+                },
+                CastContextEventType: {
+                    CAST_STATE_CHANGED: 'caststatechanged'
+                },
+                CastState: {
+                    NOT_CONNECTED: 'NOT_CONNECTED',
+                    CONNECTED: 'CONNECTED'
+                },
+                SessionManager: vi.fn(),
+                RemotePlayer: vi.fn(),
+                RemotePlayerController: vi.fn(),
             },
-            SessionManager: vi.fn(),
-            RemotePlayer: vi.fn(),
-            RemotePlayerController: vi.fn(),
         },
     };
+    
+    global.cast = (global as any).window.cast;
 });

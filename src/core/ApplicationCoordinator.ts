@@ -36,9 +36,9 @@ export class ApplicationCoordinator {
     private initializeLayerServices(): void {
         // Configurar eventos del servicio de audio
         const audioEvents: AudioServiceEvents = {
-            onPlay: (soundName: string) => this.handleAudioPlay(soundName),
-            onEnded: (soundName: string) => this.handleAudioEnded(soundName),
-            onError: (soundName: string, error: any) => this.handleAudioError(soundName, error)
+            onSoundStarted: (soundName: string) => this.handleAudioPlay(soundName),
+            onSoundEnded: (soundName: string) => this.handleAudioEnded(soundName),
+            onSoundError: (soundName: string, error: any) => this.handleAudioError(soundName, error)
         };
         this.audioService = new AudioService(audioEvents);
 
@@ -401,5 +401,17 @@ export class ApplicationCoordinator {
 
     public getCastService(): CastService {
         return this.castService;
+    }
+
+    public getAudioService(): AudioService {
+        return this.audioService;
+    }
+
+    public getUIComponents(): UIComponents {
+        return this.uiComponents;
+    }
+
+    public getPWAService(): PWAService {
+        return this.pwaService;
     }
 }
