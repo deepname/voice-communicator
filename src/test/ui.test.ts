@@ -58,7 +58,7 @@ describe('UI Domain - Input/Output Tests', () => {
             const deviceName = 'Test Device';
             
             // Should not throw error
-            expect(() => uiComponents.updateCastButton(isConnected, deviceName)).not.toThrow();
+            expect(() => uiComponents.updateCastButton(isConnected, false)).not.toThrow();
         });
     });
 
@@ -147,7 +147,7 @@ describe('UI Domain - Input/Output Tests', () => {
             expect(castButton?.title).toBe('Conectando...');
             
             // Test that updateCastButton method doesn't throw
-            expect(() => uiComponents.updateCastButton(true, 'Test Device')).not.toThrow();
+            expect(() => uiComponents.updateCastButton(true, false)).not.toThrow();
             
             // Test basic functionality
             expect(castButton).toBeDefined();

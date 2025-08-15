@@ -69,7 +69,7 @@ export class CastService {
         try {
             return await this.castManager.playAudioOnCast(audioUrl, soundName);
         } catch (error) {
-            this.events.onError(error);
+            this.events?.onError(error);
             throw error;
         }
     }

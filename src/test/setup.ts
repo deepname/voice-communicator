@@ -79,5 +79,5 @@ beforeEach(() => {
         },
     };
     
-    global.cast = (global as any).window.cast;
+    (global as any).cast = (global as any).window.cast;
 });

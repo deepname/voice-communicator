@@ -20,7 +20,7 @@ export class PWAService {
             this.setupServiceWorker();
         } catch (error) {
             console.error('Error setting up PWA:', error);
-            this.events.onInstallError(error);
+            this.events?.onInstallError(error);
         }
     }
 
@@ -28,12 +28,12 @@ export class PWAService {
         window.addEventListener('beforeinstallprompt', (e: Event) => {
             e.preventDefault();
             this.deferredPrompt = e;
-            this.events.onInstallPrompt(e);
+            this.events?.onInstallPrompt(e);
         });
 
         window.addEventListener('appinstalled', () => {
             console.log('PWA was installed');
-            this.events.onInstallSuccess();
+            this.events?.onInstallSuccess();
             this.deferredPrompt = null;
         });
     }
@@ -59,14 +59,14 @@ export class PWAService {
                 const { outcome } = await deferredPrompt.userChoice;
                 
                 if (outcome === 'accepted') {
-                    this.events.onInstallSuccess();
+                    this.events?.onInstallSuccess();
                 }
                 
                 return outcome;
             }
             return 'dismissed';
         } catch (error) {
-            this.events.onInstallError(error);
+            this.events?.onInstallError(error);
             throw error;
         }
     }
