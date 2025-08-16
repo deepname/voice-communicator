@@ -88,7 +88,8 @@ module.exports = (env, argv) => {
           { from: 'manifest.json', to: 'manifest.json', noErrorOnMissing: true },
           { from: 'sw.js', to: 'sw.js', noErrorOnMissing: true },
           { from: 'sound', to: 'sound', noErrorOnMissing: true },
-          { from: 'icon.svg', to: 'icon.svg', noErrorOnMissing: true }
+          { from: 'icon.svg', to: 'icon.svg', noErrorOnMissing: true },
+          { from: 'favicon.ico', to: 'favicon.ico', noErrorOnMissing: true }
         ],
       }),
     ],

@@ -10,6 +10,8 @@
     "build": "webpack --mode production",
     "dev": "webpack serve --mode development --open",
     "type-check": "tsc --noEmit",
+    "mega-lint": "npx mega-linter-runner",
+    "mega-lint:fix": "npx mega-linter-runner -e 'APPLY_FIXES=all'",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
